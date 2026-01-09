@@ -1,0 +1,48 @@
+"""Layer 2: Drawing primitives using matplotlib."""
+
+from plotsmith.primitives.draw import (
+    ACCENT,
+    accent_point,
+    add_range_frame,
+    apply_axes_style,
+    direct_label,
+    draw_band,
+    draw_bar,
+    draw_heatmap,
+    draw_histogram,
+    draw_scatter,
+    draw_series,
+    emphasize_last,
+    event_line,
+    force_bar_zero,
+    minimal_axes,
+    note,
+    style_bar_plot,
+    style_line_plot,
+    style_scatter_plot,
+    tidy_axes,
+)
+
+__all__ = [
+    "ACCENT",
+    "accent_point",
+    "add_range_frame",
+    "apply_axes_style",
+    "direct_label",
+    "draw_band",
+    "draw_bar",
+    "draw_heatmap",
+    "draw_histogram",
+    "draw_scatter",
+    "draw_series",
+    "emphasize_last",
+    "event_line",
+    "force_bar_zero",
+    "minimal_axes",
+    "note",
+    "style_bar_plot",
+    "style_line_plot",
+    "style_scatter_plot",
+    "tidy_axes",
+]
+
