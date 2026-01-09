@@ -48,7 +48,6 @@ Repository = "https://github.com/kylejones200/plotsmith"
 Changelog = "https://github.com/kylejones200/plotsmith/blob/main/CHANGELOG.md"
 
 [project.scripts]
-dca = "plotsmith.__main__:main"
 
 [tool.setuptools.packages.find]
 include = ["*"]
