@@ -21,3 +21,5 @@ global-exclude *.png
 global-exclude *.pth
 global-exclude *.save
 global-exclude *.egg-info
+# Exclude documentation (goes to Read the Docs, not PyPI)
+prune docs

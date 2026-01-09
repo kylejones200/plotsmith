@@ -51,7 +51,7 @@ Changelog = "https://github.com/kylejones200/plotsmith/blob/main/CHANGELOG.md"
 
 [tool.setuptools.packages.find]
 include = ["*"]
-exclude = ["ndic_raw*"]
+exclude = ["ndic_raw*", "docs*", "tests*"]
 
 [tool.black]
 line-length = 88
