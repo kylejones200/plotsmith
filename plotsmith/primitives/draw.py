@@ -131,7 +131,7 @@ def draw_bar(ax: "Axes", view: BarView) -> None:
         ax: Matplotlib axes to draw on.
         view: BarView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, str | float] = {}
     if view.color is not None:
         kwargs["color"] = view.color
     if view.edgecolor is not None:
@@ -142,9 +142,9 @@ def draw_bar(ax: "Axes", view: BarView) -> None:
         kwargs["label"] = view.label
 
     if view.horizontal:
-        ax.barh(view.x, view.height, **kwargs)
+        ax.barh(view.x, view.height, **kwargs)  # type: ignore[arg-type]
     else:
-        ax.bar(view.x, view.height, **kwargs)
+        ax.bar(view.x, view.height, **kwargs)  # type: ignore[arg-type]
 
 
 def draw_heatmap(ax: "Axes", view: HeatmapView) -> None:
@@ -154,7 +154,7 @@ def draw_heatmap(ax: "Axes", view: HeatmapView) -> None:
         ax: Matplotlib axes to draw on.
         view: HeatmapView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, str | float] = {}
     if view.cmap is not None:
         kwargs["cmap"] = view.cmap
     if view.vmin is not None:
@@ -162,7 +162,7 @@ def draw_heatmap(ax: "Axes", view: HeatmapView) -> None:
     if view.vmax is not None:
         kwargs["vmax"] = view.vmax
 
-    im = ax.imshow(view.data, aspect="auto", **kwargs)
+    im = ax.imshow(view.data, aspect="auto", **kwargs)  # type: ignore[arg-type]
 
     # Set labels if provided
     if view.x_labels is not None:
