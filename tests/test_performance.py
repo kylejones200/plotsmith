@@ -1,14 +1,14 @@
 """Performance benchmarks for PlotSmith."""
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
 
 matplotlib.use("Agg")
+
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
+import pytest
 
 from plotsmith.workflows.workflows import (
     plot_bar,

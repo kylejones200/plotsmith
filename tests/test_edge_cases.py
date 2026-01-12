@@ -1,14 +1,14 @@
 """Edge case tests for PlotSmith - empty data, NaN, invalid inputs."""
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
 
 matplotlib.use("Agg")
+
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
+import pytest
 
 from plotsmith.exceptions import ValidationError
 from plotsmith.workflows.workflows import (

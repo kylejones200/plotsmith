@@ -2,7 +2,6 @@
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from plotsmith.exceptions import ValidationError
 from plotsmith.objects.views import (

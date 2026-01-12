@@ -1,13 +1,12 @@
 """Extended tests for Layer 4: workflows - all new chart types."""
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
 
 matplotlib.use("Agg")
+
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from plotsmith.workflows.workflows import (

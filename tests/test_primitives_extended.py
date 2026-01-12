@@ -1,12 +1,11 @@
 """Extended tests for Layer 2: primitives - all new draw functions."""
 
-import numpy as np
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
 
 matplotlib.use("Agg")
+
+import numpy as np
 import matplotlib.pyplot as plt
 
 from plotsmith.objects.views import (
