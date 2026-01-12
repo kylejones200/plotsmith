@@ -44,31 +44,31 @@ class TestBandView:
         validate_band_view(view)  # Should not raise
 
     def test_mismatched_x_y_lower_raises_error(self):
-        """Test that mismatched x and y_lower lengths raise ValueError."""
+        """Test that mismatched x and y_lower lengths raise ValidationError."""
         x = np.array([1, 2, 3])
         y_lower = np.array([5, 10])  # Different length
         y_upper = np.array([15, 20, 25])
         view = BandView(x=x, y_lower=y_lower, y_upper=y_upper)
-        with pytest.raises(ValueError, match="x and y_lower must have same length"):
+        with pytest.raises(ValidationError, match="must have same length"):
             validate_band_view(view)
 
     def test_mismatched_x_y_upper_raises_error(self):
-        """Test that mismatched x and y_upper lengths raise ValueError."""
+        """Test that mismatched x and y_upper lengths raise ValidationError."""
         x = np.array([1, 2, 3])
         y_lower = np.array([5, 10, 15])
         y_upper = np.array([15, 20])  # Different length
         view = BandView(x=x, y_lower=y_lower, y_upper=y_upper)
-        with pytest.raises(ValueError, match="x and y_upper must have same length"):
+        with pytest.raises(ValidationError, match="must have same length"):
             validate_band_view(view)
 
     def test_mismatched_y_lower_y_upper_raises_error(self):
-        """Test that mismatched y_lower and y_upper lengths raise ValueError."""
+        """Test that mismatched y_lower and y_upper lengths raise ValidationError."""
         x = np.array([1, 2, 3])
         y_lower = np.array([5, 10, 15])
         y_upper = np.array([15, 20])  # Different length
         view = BandView(x=x, y_lower=y_lower, y_upper=y_upper)
-        # The validator checks x vs y_upper first, so it catches this as x/y_upper mismatch
-        with pytest.raises(ValueError, match="must have same length"):
+        # The validator checks all three together, so it catches this as a mismatch
+        with pytest.raises(ValidationError, match="must have same length"):
             validate_band_view(view)
 
 
@@ -83,11 +83,11 @@ class TestScatterView:
         validate_scatter_view(view)  # Should not raise
 
     def test_mismatched_lengths_raises_error(self):
-        """Test that mismatched x and y lengths raise ValueError."""
+        """Test that mismatched x and y lengths raise ValidationError."""
         x = np.array([1, 2, 3])
         y = np.array([10, 20])  # Different length
         view = ScatterView(x=x, y=y)
-        with pytest.raises(ValueError, match="must have same length"):
+        with pytest.raises(ValidationError, match="must have same length"):
             validate_scatter_view(view)
 
 
