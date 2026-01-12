@@ -2,15 +2,12 @@
 
 import logging
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
-if TYPE_CHECKING:
-    from matplotlib.axes import Axes
-    from matplotlib.figure import Figure
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 
 from plotsmith.objects.validate import validate_all_views
 from plotsmith.objects.views import (
