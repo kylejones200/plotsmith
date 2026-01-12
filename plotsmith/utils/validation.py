@@ -1,7 +1,6 @@
 """Validation utilities for PlotSmith."""
 
 from collections.abc import Sequence
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -9,8 +8,8 @@ import pandas as pd
 from plotsmith.exceptions import ValidationError
 
 # Type aliases for array-like data
-ArrayLike = Union[np.ndarray, pd.Series, list[float], Sequence[float]]
-DataContainer = Union[np.ndarray, pd.Series, pd.DataFrame, list, Sequence]
+ArrayLike = np.ndarray | pd.Series | list[float] | Sequence[float]
+DataContainer = np.ndarray | pd.Series | pd.DataFrame | list | Sequence
 
 
 def validate_dataframe_columns(
@@ -125,7 +124,7 @@ def validate_not_empty(data: DataContainer, data_name: str = "data") -> None:
 
 
 def validate_2d_array(
-    data: Union[np.ndarray, pd.DataFrame, Sequence[Sequence[float]]],
+    data: np.ndarray | pd.DataFrame | Sequence[Sequence[float]],
     data_name: str = "data",
 ) -> None:
     """Validate that data is a 2D array.

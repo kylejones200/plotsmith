@@ -5,6 +5,23 @@ from collections.abc import Sequence
 import numpy as np
 
 from plotsmith.exceptions import ValidationError
+from plotsmith.objects.views import (
+    BandView,
+    BarView,
+    BoxView,
+    DumbbellView,
+    HeatmapView,
+    HistogramView,
+    LollipopView,
+    MetricView,
+    RangeView,
+    ScatterView,
+    SeriesView,
+    SlopeView,
+    ViolinView,
+    WaffleView,
+    WaterfallView,
+)
 
 # Union type for all possible view types
 View = (
@@ -23,23 +40,6 @@ View = (
     | BoxView
     | ViolinView
     | MetricView
-)
-from plotsmith.objects.views import (
-    BandView,
-    BarView,
-    BoxView,
-    DumbbellView,
-    HeatmapView,
-    HistogramView,
-    LollipopView,
-    MetricView,
-    RangeView,
-    ScatterView,
-    SeriesView,
-    SlopeView,
-    ViolinView,
-    WaffleView,
-    WaterfallView,
 )
 
 
@@ -129,7 +129,7 @@ def validate_bar_view(view: BarView) -> None:
     """
     x_length = len(view.x) if isinstance(view.x, (np.ndarray, list)) else 0
     height_length = len(view.height)
-    
+
     if x_length != height_length:
         raise ValidationError(
             f"BarView x and height must have same length, got {x_length} and {height_length}",
