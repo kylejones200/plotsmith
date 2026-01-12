@@ -10,8 +10,6 @@ import pandas as pd
 import pytest
 
 from plotsmith.exceptions import ValidationError
-
-from plotsmith.exceptions import ValidationError
 from plotsmith.workflows.workflows import (
     plot_bar,
     plot_box,
