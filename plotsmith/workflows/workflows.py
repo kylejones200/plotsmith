@@ -97,7 +97,7 @@ def plot_timeseries(
         views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -182,7 +182,7 @@ def plot_backtest(
         views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -301,7 +301,7 @@ def plot_histogram(
             views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -386,7 +386,7 @@ def plot_bar(
         views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -563,7 +563,7 @@ def plot_heatmap(
         views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -643,7 +643,7 @@ def plot_model_comparison(
             )
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -725,7 +725,7 @@ def plot_residuals(
         views, spec = task.execute()
 
         # Validate views
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         # Create figure and axes
         fig, ax = plt.subplots(figsize=figsize)
@@ -825,7 +825,7 @@ def plot_waterfall(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -886,7 +886,7 @@ def plot_waffle(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -962,7 +962,7 @@ def plot_dumbbell(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1035,7 +1035,7 @@ def plot_range(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1105,7 +1105,7 @@ def plot_lollipop(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1228,7 +1228,7 @@ def plot_slope(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1293,7 +1293,7 @@ def plot_metric(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1364,7 +1364,7 @@ def plot_box(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1435,7 +1435,7 @@ def plot_violin(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1509,7 +1509,7 @@ def plot_scatter(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1578,7 +1578,7 @@ def plot_correlation(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
@@ -1638,7 +1638,7 @@ def plot_forecast_comparison(
         )
         views, spec = task.execute()
 
-        validate_all_views(views)
+        validate_all_views(views)  # type: ignore[arg-type]
 
         fig, ax = plt.subplots(figsize=figsize)
         minimal_axes(ax)
