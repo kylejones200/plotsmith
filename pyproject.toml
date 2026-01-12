@@ -99,7 +99,7 @@ pretty = true
 disable_error_code = ["import-untyped"]
 strict_optional = true
 warn_redundant_casts = true
-warn_unused_ignores = true
+warn_unused_ignores = false  # Too many false positives with matplotlib
 # Suppress common matplotlib kwargs type errors (false positives)
 warn_unreachable = true
 warn_no_return = true
