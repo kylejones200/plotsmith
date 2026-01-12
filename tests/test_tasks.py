@@ -1,6 +1,5 @@
 """Tests for Layer 3: tasks."""
 
-import numpy as np
 import pandas as pd
 import pytest
 

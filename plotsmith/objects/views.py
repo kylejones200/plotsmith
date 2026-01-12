@@ -1,7 +1,6 @@
 """Immutable dataclasses representing plot-ready data and plot specs."""
 
 from dataclasses import dataclass
-from typing import Optional
 
 import numpy as np
 
@@ -21,10 +20,10 @@ class SeriesView:
 
     x: np.ndarray
     y: np.ndarray
-    label: Optional[str] = None
-    marker: Optional[str] = None
-    linewidth: Optional[float] = None
-    alpha: Optional[float] = None
+    label: str | None = None
+    marker: str | None = None
+    linewidth: float | None = None
+    alpha: float | None = None
 
 
 @dataclass(frozen=True)
@@ -42,8 +41,8 @@ class BandView:
     x: np.ndarray
     y_lower: np.ndarray
     y_upper: np.ndarray
-    label: Optional[str] = None
-    alpha: Optional[float] = None
+    label: str | None = None
+    alpha: float | None = None
 
 
 @dataclass(frozen=True)
@@ -62,11 +61,11 @@ class ScatterView:
 
     x: np.ndarray
     y: np.ndarray
-    label: Optional[str] = None
-    marker: Optional[str] = None
-    alpha: Optional[float] = None
-    s: Optional[float | np.ndarray] = None
-    c: Optional[str | np.ndarray] = None
+    label: str | None = None
+    marker: str | None = None
+    alpha: float | None = None
+    s: float | np.ndarray | None = None
+    c: str | np.ndarray | None = None
 
 
 @dataclass(frozen=True)
@@ -83,11 +82,11 @@ class HistogramView:
     """
 
     values: np.ndarray
-    bins: Optional[int | np.ndarray] = None
-    label: Optional[str] = None
-    color: Optional[str] = None
-    edgecolor: Optional[str] = None
-    alpha: Optional[float] = None
+    bins: int | np.ndarray | None = None
+    label: str | None = None
+    color: str | None = None
+    edgecolor: str | None = None
+    alpha: float | None = None
 
 
 @dataclass(frozen=True)
@@ -106,10 +105,10 @@ class BarView:
 
     x: np.ndarray | list[str]
     height: np.ndarray
-    label: Optional[str] = None
-    color: Optional[str] = None
-    edgecolor: Optional[str] = None
-    alpha: Optional[float] = None
+    label: str | None = None
+    color: str | None = None
+    edgecolor: str | None = None
+    alpha: float | None = None
     horizontal: bool = False
 
 
@@ -129,13 +128,13 @@ class HeatmapView:
     """
 
     data: np.ndarray
-    x_labels: Optional[list[str] | np.ndarray] = None
-    y_labels: Optional[list[str] | np.ndarray] = None
-    cmap: Optional[str] = None
-    vmin: Optional[float] = None
-    vmax: Optional[float] = None
+    x_labels: list[str] | np.ndarray | None = None
+    y_labels: list[str] | np.ndarray | None = None
+    cmap: str | None = None
+    vmin: float | None = None
+    vmax: float | None = None
     annotate: bool = False
-    fmt: Optional[str] = None
+    fmt: str | None = None
 
 
 @dataclass(frozen=True)
@@ -152,9 +151,9 @@ class WaterfallView:
 
     categories: list[str] | np.ndarray
     values: np.ndarray
-    measures: Optional[list[str] | np.ndarray] = None
-    colors: Optional[list[str] | np.ndarray] = None
-    color: Optional[str] = None
+    measures: list[str] | np.ndarray | None = None
+    colors: list[str] | np.ndarray | None = None
+    color: str | None = None
 
 
 @dataclass(frozen=True)
@@ -171,9 +170,9 @@ class WaffleView:
 
     categories: list[str] | np.ndarray
     values: np.ndarray
-    colors: Optional[list[str] | np.ndarray] = None
-    rows: Optional[int] = None
-    columns: Optional[int] = None
+    colors: list[str] | np.ndarray | None = None
+    rows: int | None = None
+    columns: int | None = None
 
 
 @dataclass(frozen=True)
@@ -194,10 +193,10 @@ class DumbbellView:
     categories: list[str] | np.ndarray
     values1: np.ndarray
     values2: np.ndarray
-    label1: Optional[str] = None
-    label2: Optional[str] = None
-    colors: Optional[list[str] | np.ndarray] = None
-    color: Optional[str] = None
+    label1: str | None = None
+    label2: str | None = None
+    colors: list[str] | np.ndarray | None = None
+    color: str | None = None
     orientation: str = "h"
 
 
@@ -218,9 +217,9 @@ class RangeView:
     categories: list[str] | np.ndarray
     values1: np.ndarray
     values2: np.ndarray
-    label1: Optional[str] = None
-    label2: Optional[str] = None
-    color: Optional[str] = None
+    label1: str | None = None
+    label2: str | None = None
+    color: str | None = None
     orientation: str = "h"
 
 
@@ -239,9 +238,9 @@ class LollipopView:
 
     categories: list[str] | np.ndarray
     values: np.ndarray
-    color: Optional[str] = None
-    marker: Optional[str] = None
-    linewidth: Optional[float] = None
+    color: str | None = None
+    marker: str | None = None
+    linewidth: float | None = None
     horizontal: bool = False
 
 
@@ -257,7 +256,7 @@ class SlopeView:
 
     x: np.ndarray
     groups: dict[str, np.ndarray]
-    colors: Optional[dict[str, str]] = None
+    colors: dict[str, str] | None = None
 
 
 @dataclass(frozen=True)
@@ -276,11 +275,11 @@ class MetricView:
 
     title: str
     value: float
-    delta: Optional[float] = None
-    prefix: Optional[str] = None
-    suffix: Optional[str] = None
-    value_color: Optional[str] = None
-    delta_color: Optional[str] = None
+    delta: float | None = None
+    prefix: str | None = None
+    suffix: str | None = None
+    value_color: str | None = None
+    delta_color: str | None = None
 
 
 @dataclass(frozen=True)
@@ -298,10 +297,10 @@ class BoxView:
     """
 
     data: list[np.ndarray]
-    labels: Optional[list[str] | np.ndarray] = None
-    positions: Optional[np.ndarray] = None
-    colors: Optional[list[str] | np.ndarray] = None
-    color: Optional[str] = None
+    labels: list[str] | np.ndarray | None = None
+    positions: np.ndarray | None = None
+    colors: list[str] | np.ndarray | None = None
+    color: str | None = None
     show_outliers: bool = True
     show_means: bool = False
 
@@ -321,10 +320,10 @@ class ViolinView:
     """
 
     data: list[np.ndarray]
-    labels: Optional[list[str] | np.ndarray] = None
-    positions: Optional[np.ndarray] = None
-    colors: Optional[list[str] | np.ndarray] = None
-    color: Optional[str] = None
+    labels: list[str] | np.ndarray | None = None
+    positions: np.ndarray | None = None
+    colors: list[str] | np.ndarray | None = None
+    color: str | None = None
     show_means: bool = False
     show_medians: bool = True
 
@@ -341,9 +340,9 @@ class FigureSpec:
         ylim: Optional tuple of (ymin, ymax).
     """
 
-    title: Optional[str] = None
-    xlabel: Optional[str] = None
-    ylabel: Optional[str] = None
-    xlim: Optional[tuple[float, float]] = None
-    ylim: Optional[tuple[float, float]] = None
+    title: str | None = None
+    xlabel: str | None = None
+    ylabel: str | None = None
+    xlim: tuple[float, float] | None = None
+    ylim: tuple[float, float] | None = None
 

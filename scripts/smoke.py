@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")  # Use non-interactive backend
 
 import numpy as np
@@ -34,7 +35,7 @@ def main() -> int:
     values = np.random.randn(n) * 2 + 10
     index = pd.date_range("2020-01-01", periods=n, freq="D")
     y: SeriesLike = pd.Series(values, index=index, name="Test Series")
-    
+
     # Validate via timesmith.typing
     try:
         assert_series_like(y)
@@ -42,12 +43,12 @@ def main() -> int:
     except Exception as e:
         print(f"ERROR: timesmith validation failed: {e}", file=sys.stderr)
         return 1
-    
+
     # Use plotsmith to plot
     try:
         output_dir = Path(__file__).parent.parent / "examples" / "out"
         output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         fig, ax = plot_timeseries(
             data=y,
             title="Smoke Test Plot",
@@ -55,11 +56,11 @@ def main() -> int:
             ylabel="Value",
             save_path=output_dir / "smoke_test.png",
         )
-        
+
         print("✓ Created plot successfully")
-        print(f"✓ Smoke test passed: plotsmith works with timesmith typing")
+        print("✓ Smoke test passed: plotsmith works with timesmith typing")
         return 0
-        
+
     except Exception as e:
         print(f"ERROR: plotsmith plotting failed: {e}", file=sys.stderr)
         import traceback

@@ -2,7 +2,6 @@
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,19 +10,10 @@ import pandas as pd
 from plotsmith.objects.validate import validate_all_views
 from plotsmith.objects.views import (
     BarView,
-    BoxView,
-    DumbbellView,
     FigureSpec,
     HeatmapView,
     HistogramView,
-    LollipopView,
-    MetricView,
-    RangeView,
     SeriesView,
-    SlopeView,
-    ViolinView,
-    WaffleView,
-    WaterfallView,
 )
 from plotsmith.primitives.draw import (
     apply_axes_style,
@@ -40,8 +30,8 @@ from plotsmith.primitives.draw import (
     draw_series,
     draw_slope,
     draw_violin,
-    draw_waterfall,
     draw_waffle,
+    draw_waterfall,
     event_line,
     force_bar_zero,
     minimal_axes,
@@ -72,11 +62,11 @@ logger = logging.getLogger(__name__)
 
 def plot_timeseries(
     data: pd.Series | pd.DataFrame,
-    bands: Optional[dict[str, tuple[pd.Series, pd.Series]]] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    bands: dict[str, tuple[pd.Series, pd.Series]] | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a time series with optional confidence bands.
@@ -147,11 +137,11 @@ def plot_backtest(
     results: pd.DataFrame,
     y_true_col: str = "y_true",
     y_pred_col: str = "y_pred",
-    fold_id_col: Optional[str] = "fold_id",
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    fold_id_col: str | None = "fold_id",
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (8, 8),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot backtest results as scatter plot of predictions vs actuals.
@@ -227,17 +217,17 @@ def plot_backtest(
 
 def plot_histogram(
     data: np.ndarray | pd.Series | list[np.ndarray | pd.Series],
-    bins: Optional[int | np.ndarray] = None,
-    labels: Optional[list[str]] = None,
-    colors: Optional[list[str]] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    label: Optional[str] = None,
-    color: Optional[str] = None,
-    edgecolor: Optional[str] = None,
-    alpha: Optional[float] = None,
-    save_path: Optional[str | Path] = None,
+    bins: int | np.ndarray | None = None,
+    labels: list[str] | None = None,
+    colors: list[str] | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    label: str | None = None,
+    color: str | None = None,
+    edgecolor: str | None = None,
+    alpha: float | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a histogram (supports single or multiple overlaid histograms).
@@ -331,16 +321,16 @@ def plot_histogram(
 def plot_bar(
     x: np.ndarray | list[str] | pd.Series | pd.Index,
     height: np.ndarray | pd.Series,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    label: Optional[str] = None,
-    color: Optional[str] = None,
-    edgecolor: Optional[str] = None,
-    alpha: Optional[float] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    label: str | None = None,
+    color: str | None = None,
+    edgecolor: str | None = None,
+    alpha: float | None = None,
     horizontal: bool = False,
     force_zero: bool = True,
-    save_path: Optional[str | Path] = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a bar chart.
@@ -512,15 +502,15 @@ def small_multiples(
 
 def plot_heatmap(
     data: np.ndarray | pd.DataFrame,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    cmap: Optional[str] = None,
-    vmin: Optional[float] = None,
-    vmax: Optional[float] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    cmap: str | None = None,
+    vmin: float | None = None,
+    vmax: float | None = None,
     annotate: bool = False,
-    fmt: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    fmt: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a heatmap (correlation matrix or 2D data).
@@ -589,11 +579,11 @@ def plot_heatmap(
 def plot_model_comparison(
     data: pd.Series | pd.DataFrame,
     models: dict[str, np.ndarray | pd.Series],
-    test_start_idx: Optional[int] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    test_start_idx: int | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (12, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot multiple model predictions compared to actual data.
@@ -675,13 +665,13 @@ def plot_model_comparison(
 def plot_residuals(
     actual: np.ndarray | pd.Series,
     predicted: np.ndarray | pd.Series,
-    x: Optional[np.ndarray | pd.Series] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
+    x: np.ndarray | pd.Series | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
     plot_type: str = "scatter",
     add_perfect_line: bool = True,
-    save_path: Optional[str | Path] = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot residuals (actual vs predicted or residuals over time).
@@ -765,13 +755,13 @@ def plot_waterfall(
     df: pd.DataFrame,
     categories_col: str,
     values_col: str,
-    measure_col: Optional[str] = None,
-    colors: Optional[list[str]] = None,
-    color: Optional[str] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    measure_col: str | None = None,
+    colors: list[str] | None = None,
+    color: str | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a waterfall chart.
@@ -832,11 +822,11 @@ def plot_waffle(
     df: pd.DataFrame,
     category_col: str,
     value_col: str,
-    colors: Optional[list[str]] = None,
-    rows: Optional[int] = None,
-    columns: Optional[int] = None,
-    title: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    colors: list[str] | None = None,
+    rows: int | None = None,
+    columns: int | None = None,
+    title: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a waffle chart.
@@ -894,15 +884,15 @@ def plot_dumbbell(
     categories_col: str,
     values1_col: str,
     values2_col: str,
-    label1: Optional[str] = None,
-    label2: Optional[str] = None,
-    colors: Optional[list[str]] = None,
-    color: Optional[str] = None,
+    label1: str | None = None,
+    label2: str | None = None,
+    colors: list[str] | None = None,
+    color: str | None = None,
     orientation: str = "h",
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a dumbbell chart.
@@ -970,14 +960,14 @@ def plot_range(
     categories_col: str,
     values1_col: str,
     values2_col: str,
-    label1: Optional[str] = None,
-    label2: Optional[str] = None,
-    color: Optional[str] = None,
+    label1: str | None = None,
+    label2: str | None = None,
+    color: str | None = None,
     orientation: str = "h",
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a range chart (similar to dumbbell but different styling).
@@ -1042,14 +1032,14 @@ def plot_lollipop(
     df: pd.DataFrame,
     categories_col: str,
     values_col: str,
-    color: Optional[str] = None,
-    marker: Optional[str] = None,
-    linewidth: Optional[float] = None,
+    color: str | None = None,
+    marker: str | None = None,
+    linewidth: float | None = None,
     horizontal: bool = False,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a lollipop chart.
@@ -1116,11 +1106,11 @@ def plot_slope(
     df: pd.DataFrame | None = None,
     categories_col: str | None = None,
     values_cols: list[str] | None = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    colors: Optional[dict[str, str]] = None,
-    save_path: Optional[str | Path] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    colors: dict[str, str] | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a slope chart.
@@ -1156,13 +1146,13 @@ def plot_slope(
                 raise ValueError(f"Column '{categories_col}' not found in DataFrame")
             if len(df) != 2:
                 raise ValueError("DataFrame must have exactly 2 rows for slope chart")
-            
+
             groups_dict = {}
             for col in values_cols:
                 if col not in df.columns:
                     raise ValueError(f"Column '{col}' not found in DataFrame")
                 groups_dict[col] = df[col].values
-            
+
             # Use categories column as x values
             x_unique = df[categories_col].values
             if len(x_unique) != 2:
@@ -1224,12 +1214,12 @@ def plot_slope(
 def plot_metric(
     title: str,
     value: float,
-    delta: Optional[float] = None,
-    prefix: Optional[str] = None,
-    suffix: Optional[str] = None,
-    value_color: Optional[str] = None,
-    delta_color: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    delta: float | None = None,
+    prefix: str | None = None,
+    suffix: str | None = None,
+    value_color: str | None = None,
+    delta_color: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (6, 4),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a metric display.
@@ -1287,14 +1277,14 @@ def plot_box(
     data: pd.DataFrame,
     x: str,
     y: str,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    colors: Optional[list[str]] = None,
-    color: Optional[str] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    colors: list[str] | None = None,
+    color: str | None = None,
     show_outliers: bool = True,
     show_means: bool = False,
-    save_path: Optional[str | Path] = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a box plot.
@@ -1358,14 +1348,14 @@ def plot_violin(
     data: pd.DataFrame,
     x: str,
     y: str,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    colors: Optional[list[str]] = None,
-    color: Optional[str] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    colors: list[str] | None = None,
+    color: str | None = None,
     show_means: bool = False,
     show_medians: bool = True,
-    save_path: Optional[str | Path] = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a violin plot.
@@ -1429,15 +1419,15 @@ def plot_scatter(
     data: pd.DataFrame,
     x: str,
     y: str,
-    color: Optional[str] = None,
-    size: Optional[str] = None,
-    label: Optional[str] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    alpha: Optional[float] = None,
-    marker: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    color: str | None = None,
+    size: str | None = None,
+    label: str | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    alpha: float | None = None,
+    marker: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a scatter plot with optional color and size mappings.
@@ -1506,13 +1496,13 @@ def plot_scatter(
 def plot_correlation(
     data: pd.DataFrame,
     method: str = "pearson",
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    cmap: Optional[str] = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    cmap: str | None = None,
     annotate: bool = True,
-    fmt: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    fmt: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a correlation heatmap.
@@ -1571,11 +1561,11 @@ def plot_correlation(
 def plot_forecast_comparison(
     actual: pd.Series | np.ndarray,
     forecasts: dict[str, pd.Series | np.ndarray],
-    intervals: Optional[dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]] | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (12, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot forecast comparison with actual data and multiple forecasts.

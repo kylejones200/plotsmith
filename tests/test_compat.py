@@ -2,11 +2,10 @@
 
 import warnings
 
-import pandas as pd
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
+import pandas as pd
+import pytest
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

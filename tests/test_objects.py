@@ -3,13 +3,13 @@
 import numpy as np
 import pytest
 
-from plotsmith.objects.views import BandView, ScatterView, SeriesView
 from plotsmith.objects.validate import (
     validate_all_views,
     validate_band_view,
     validate_scatter_view,
     validate_series_view,
 )
+from plotsmith.objects.views import BandView, ScatterView, SeriesView
 
 
 class TestSeriesView:

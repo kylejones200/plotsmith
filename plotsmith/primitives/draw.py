@@ -501,7 +501,7 @@ def draw_waterfall(ax: "Axes", view: WaterfallView) -> None:
 
     for i in range(n):
         measure_type = view.measures[i] if view.measures is not None else None
-        
+
         if measure_type == "absolute" or (measure_type is None and i == 0):
             # Absolute value: bar goes from 0 to value
             bottoms[i] = 0
@@ -620,10 +620,10 @@ def _draw_dumbbell_range(
     categories: np.ndarray,
     values1: np.ndarray,
     values2: np.ndarray,
-    colors: Optional[list[str] | np.ndarray],
-    color: Optional[str],
+    colors: list[str] | np.ndarray | None,
+    color: str | None,
     orientation: str,
-    label1: Optional[str],
+    label1: str | None,
     linewidth: float,
 ) -> None:
     """Helper function to draw dumbbell/range charts (shared logic).

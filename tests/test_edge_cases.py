@@ -16,7 +16,6 @@ from plotsmith.workflows.workflows import (
     plot_histogram,
     plot_scatter,
     plot_timeseries,
-    plot_violin,
 )
 
 

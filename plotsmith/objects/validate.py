@@ -313,11 +313,11 @@ def validate_all_views(
             pass
         elif isinstance(view, HeatmapView):
             # HeatmapView validation
-        if view.data.ndim != 2:
-            raise ValidationError(
-                f"HeatmapView data must be 2D, got {view.data.ndim}D",
-                context={"view_type": "HeatmapView", "data_shape": view.data.shape, "data_ndim": view.data.ndim},
-            )
+            if view.data.ndim != 2:
+                raise ValidationError(
+                    f"HeatmapView data must be 2D, got {view.data.ndim}D",
+                    context={"view_type": "HeatmapView", "data_shape": view.data.shape, "data_ndim": view.data.ndim},
+                )
         elif isinstance(view, WaterfallView):
             validate_waterfall_view(view)
         elif isinstance(view, WaffleView):

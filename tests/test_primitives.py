@@ -1,10 +1,8 @@
 """Tests for Layer 2: primitives."""
 
-import numpy as np
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
+import numpy as np
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt

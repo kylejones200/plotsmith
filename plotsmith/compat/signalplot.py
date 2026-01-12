@@ -2,7 +2,6 @@
 
 import warnings
 from pathlib import Path
-from typing import Optional
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -12,11 +11,11 @@ from plotsmith.workflows.workflows import plot_backtest, plot_timeseries
 
 def plot_series(
     data: pd.Series | pd.DataFrame,
-    bands: Optional[dict[str, tuple[pd.Series, pd.Series]]] = None,
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    bands: dict[str, tuple[pd.Series, pd.Series]] | None = None,
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot a time series (deprecated, use plot_timeseries).
@@ -49,11 +48,11 @@ def plot_prediction_scatter(
     results: pd.DataFrame,
     y_true_col: str = "y_true",
     y_pred_col: str = "y_pred",
-    fold_id_col: Optional[str] = "fold_id",
-    title: Optional[str] = None,
-    xlabel: Optional[str] = None,
-    ylabel: Optional[str] = None,
-    save_path: Optional[str | Path] = None,
+    fold_id_col: str | None = "fold_id",
+    title: str | None = None,
+    xlabel: str | None = None,
+    ylabel: str | None = None,
+    save_path: str | Path | None = None,
     figsize: tuple[float, float] = (8, 8),
 ) -> tuple[plt.Figure, plt.Axes]:
     """Plot prediction scatter plot (deprecated, use plot_backtest).

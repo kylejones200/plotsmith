@@ -1,6 +1,5 @@
 """Tasks that convert user data into Layer 1 view objects."""
 
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -24,9 +23,7 @@ from plotsmith.objects.views import (
     WaterfallView,
 )
 from plotsmith.utils.validation import (
-    suggest_column_name,
     validate_dataframe_columns,
-    validate_not_empty,
 )
 
 
@@ -40,10 +37,10 @@ class TimeseriesPlotTask:
     def __init__(
         self,
         data: pd.Series | pd.DataFrame,
-        bands: Optional[dict[str, tuple[pd.Series, pd.Series]]] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        bands: dict[str, tuple[pd.Series, pd.Series]] | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the timeseries plot task.
 
@@ -113,10 +110,10 @@ class BacktestPlotTask:
         results: pd.DataFrame,
         y_true_col: str = "y_true",
         y_pred_col: str = "y_pred",
-        fold_id_col: Optional[str] = "fold_id",
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        fold_id_col: str | None = "fold_id",
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the backtest plot task.
 
@@ -185,14 +182,14 @@ class HistogramPlotTask:
     def __init__(
         self,
         data: np.ndarray | pd.Series,
-        bins: Optional[int | np.ndarray] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        label: Optional[str] = None,
-        color: Optional[str] = None,
-        edgecolor: Optional[str] = None,
-        alpha: Optional[float] = None,
+        bins: int | np.ndarray | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        label: str | None = None,
+        color: str | None = None,
+        edgecolor: str | None = None,
+        alpha: float | None = None,
     ):
         """Initialize the histogram plot task.
 
@@ -247,13 +244,13 @@ class BarPlotTask:
         self,
         x: np.ndarray | list[str] | pd.Series | pd.Index,
         height: np.ndarray | pd.Series,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        label: Optional[str] = None,
-        color: Optional[str] = None,
-        edgecolor: Optional[str] = None,
-        alpha: Optional[float] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        label: str | None = None,
+        color: str | None = None,
+        edgecolor: str | None = None,
+        alpha: float | None = None,
         horizontal: bool = False,
     ):
         """Initialize the bar plot task.
@@ -318,14 +315,14 @@ class HeatmapPlotTask:
     def __init__(
         self,
         data: np.ndarray | pd.DataFrame,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        cmap: Optional[str] = None,
-        vmin: Optional[float] = None,
-        vmax: Optional[float] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        cmap: str | None = None,
+        vmin: float | None = None,
+        vmax: float | None = None,
         annotate: bool = False,
-        fmt: Optional[str] = None,
+        fmt: str | None = None,
     ):
         """Initialize the heatmap plot task.
 
@@ -394,10 +391,10 @@ class ResidualsPlotTask:
         self,
         actual: np.ndarray | pd.Series,
         predicted: np.ndarray | pd.Series,
-        x: Optional[np.ndarray | pd.Series] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        x: np.ndarray | pd.Series | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
         plot_type: str = "scatter",  # "scatter" or "series"
     ):
         """Initialize the residuals plot task.
@@ -472,12 +469,12 @@ class WaterfallPlotTask:
         self,
         categories: list[str] | np.ndarray,
         values: np.ndarray | list[float],
-        measures: Optional[list[str] | np.ndarray] = None,
-        colors: Optional[list[str] | np.ndarray] = None,
-        color: Optional[str] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        measures: list[str] | np.ndarray | None = None,
+        colors: list[str] | np.ndarray | None = None,
+        color: str | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the waterfall plot task.
 
@@ -529,12 +526,12 @@ class WafflePlotTask:
         self,
         categories: list[str] | np.ndarray,
         values: np.ndarray | list[float],
-        colors: Optional[list[str] | np.ndarray] = None,
-        rows: Optional[int] = None,
-        columns: Optional[int] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        colors: list[str] | np.ndarray | None = None,
+        rows: int | None = None,
+        columns: int | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the waffle plot task.
 
@@ -587,14 +584,14 @@ class DumbbellPlotTask:
         categories: list[str] | np.ndarray,
         values1: np.ndarray | list[float],
         values2: np.ndarray | list[float],
-        label1: Optional[str] = None,
-        label2: Optional[str] = None,
-        colors: Optional[list[str] | np.ndarray] = None,
-        color: Optional[str] = None,
+        label1: str | None = None,
+        label2: str | None = None,
+        colors: list[str] | np.ndarray | None = None,
+        color: str | None = None,
         orientation: str = "h",
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the dumbbell plot task.
 
@@ -661,13 +658,13 @@ class RangePlotTask:
         categories: list[str] | np.ndarray,
         values1: np.ndarray | list[float],
         values2: np.ndarray | list[float],
-        label1: Optional[str] = None,
-        label2: Optional[str] = None,
-        color: Optional[str] = None,
+        label1: str | None = None,
+        label2: str | None = None,
+        color: str | None = None,
         orientation: str = "h",
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the range plot task.
 
@@ -730,13 +727,13 @@ class LollipopPlotTask:
         self,
         categories: list[str] | np.ndarray,
         values: np.ndarray | list[float],
-        color: Optional[str] = None,
-        marker: Optional[str] = None,
-        linewidth: Optional[float] = None,
+        color: str | None = None,
+        marker: str | None = None,
+        linewidth: float | None = None,
         horizontal: bool = False,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the lollipop plot task.
 
@@ -794,10 +791,10 @@ class SlopePlotTask:
         self,
         x: np.ndarray | list[float],
         groups: dict[str, np.ndarray | list[float]],
-        colors: Optional[dict[str, str]] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        colors: dict[str, str] | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the slope plot task.
 
@@ -845,11 +842,11 @@ class MetricPlotTask:
         self,
         title: str,
         value: float,
-        delta: Optional[float] = None,
-        prefix: Optional[str] = None,
-        suffix: Optional[str] = None,
-        value_color: Optional[str] = None,
-        delta_color: Optional[str] = None,
+        delta: float | None = None,
+        prefix: str | None = None,
+        suffix: str | None = None,
+        value_color: str | None = None,
+        delta_color: str | None = None,
     ):
         """Initialize the metric plot task.
 
@@ -902,11 +899,11 @@ class BoxPlotTask:
         data: pd.DataFrame,
         x: str,
         y: str,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        colors: Optional[list[str]] = None,
-        color: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        colors: list[str] | None = None,
+        color: str | None = None,
         show_outliers: bool = True,
         show_means: bool = False,
     ):
@@ -973,11 +970,11 @@ class ViolinPlotTask:
         data: pd.DataFrame,
         x: str,
         y: str,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        colors: Optional[list[str]] = None,
-        color: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        colors: list[str] | None = None,
+        color: str | None = None,
         show_means: bool = False,
         show_medians: bool = True,
     ):
@@ -1044,14 +1041,14 @@ class ScatterPlotTask:
         data: pd.DataFrame,
         x: str,
         y: str,
-        color: Optional[str] = None,
-        size: Optional[str] = None,
-        label: Optional[str] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        alpha: Optional[float] = None,
-        marker: Optional[str] = None,
+        color: str | None = None,
+        size: str | None = None,
+        label: str | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        alpha: float | None = None,
+        marker: str | None = None,
     ):
         """Initialize the scatter plot task.
 
@@ -1127,12 +1124,12 @@ class CorrelationPlotTask:
         self,
         data: pd.DataFrame,
         method: str = "pearson",
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
-        cmap: Optional[str] = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        cmap: str | None = None,
         annotate: bool = True,
-        fmt: Optional[str] = None,
+        fmt: str | None = None,
     ):
         """Initialize the correlation plot task.
 
@@ -1191,10 +1188,10 @@ class ForecastComparisonPlotTask:
         self,
         actual: pd.Series | np.ndarray,
         forecasts: dict[str, pd.Series | np.ndarray],
-        intervals: Optional[dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]] = None,
-        title: Optional[str] = None,
-        xlabel: Optional[str] = None,
-        ylabel: Optional[str] = None,
+        intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]] | None = None,
+        title: str | None = None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
     ):
         """Initialize the forecast comparison plot task.
 
