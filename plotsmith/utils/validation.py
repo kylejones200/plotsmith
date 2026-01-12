@@ -39,9 +39,7 @@ def validate_dataframe_columns(
         )
 
 
-def validate_array_lengths(
-    *arrays: ArrayLike, names: list[str] | None = None
-) -> None:
+def validate_array_lengths(*arrays: ArrayLike, names: list[str] | None = None) -> None:
     """Validate that multiple arrays have the same length.
 
     Args:
@@ -216,4 +214,3 @@ def suggest_column_name(
             best_match = col
 
     return best_match
-

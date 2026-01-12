@@ -81,9 +81,7 @@ def validate_series_view(view: SeriesView) -> None:
     Raises:
         ValidationError: If x and y arrays have mismatched lengths.
     """
-    _validate_matching_lengths(
-        view.x, view.y, names=["x", "y"], view_type="SeriesView"
-    )
+    _validate_matching_lengths(view.x, view.y, names=["x", "y"], view_type="SeriesView")
 
 
 def validate_band_view(view: BandView) -> None:
