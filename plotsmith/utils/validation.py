@@ -9,10 +9,10 @@ from plotsmith.exceptions import ValidationError
 
 # Type aliases for array-like data
 ArrayLike = (
-    np.ndarray | pd.Series | list[float] | Sequence[float]
+    np.ndarray | pd.Series | list[float] | Sequence[float],
 )
 DataContainer = (
-    np.ndarray | pd.Series | pd.DataFrame | list | Sequence
+    np.ndarray | pd.Series | pd.DataFrame | list | Sequence,
 )
 
 
