@@ -612,7 +612,7 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
         if n_cats > 1:
             color_indices = np.linspace(0.3, 1.0, n_cats)
         else:
-            color_indices = [0.65]
+            color_indices: list[float] = [0.65]
         cmap = cm.get_cmap("Blues")  # type: ignore[attr-defined]
         colors_list = [cmap(idx) for idx in color_indices]
 
@@ -621,7 +621,7 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
         for col in range(columns):
             cat_idx = grid[row, col]
             color = colors_list[cat_idx] if cat_idx < len(colors_list) else "#cccccc"
-            rect = plt.Rectangle(
+            rect = plt.Rectangle(  # type: ignore[attr-defined]
                 (col, rows - row - 1),
                 1,
                 1,
@@ -975,7 +975,7 @@ def draw_box(ax: "Axes", view: BoxView) -> None:
     """
     bp = ax.boxplot(
         view.data,
-        labels=view.labels,  # type: ignore[call-overload]
+        labels=view.labels,  # type: ignore[call-overload,arg-type]
         positions=view.positions,
         patch_artist=True,
         showmeans=view.show_means,
@@ -1025,18 +1025,18 @@ def draw_violin(ax: "Axes", view: ViolinView) -> None:
     # Set colors - vectorized
     bodies = parts["bodies"]
     if view.color:
-        for pc in bodies:
+        for pc in bodies:  # type: ignore[union-attr]
             pc.set_facecolor(view.color)  # type: ignore[attr-defined]
             pc.set_alpha(0.7)  # type: ignore[attr-defined]
     elif view.colors:
         colors_arr = np.asarray(view.colors)
-        for i, pc in enumerate(bodies):  # type: ignore[arg-type]
+        for i, pc in enumerate(bodies):  # type: ignore[union-attr,arg-type]
             if i < len(colors_arr):
                 pc.set_facecolor(colors_arr[i])  # type: ignore[attr-defined]
                 pc.set_alpha(0.7)  # type: ignore[attr-defined]
 
     # Style violins
-    for pc in bodies:
+    for pc in bodies:  # type: ignore[union-attr]
         pc.set_edgecolor("black")  # type: ignore[attr-defined]
         pc.set_linewidth(1.0)  # type: ignore[attr-defined]
 
