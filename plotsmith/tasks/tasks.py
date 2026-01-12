@@ -941,10 +941,7 @@ class BoxPlotTask:
         Returns:
             Tuple of (list of BoxView objects, FigureSpec).
         """
-        if self.x not in self.data.columns:
-            raise ValueError(f"Column '{self.x}' not found in data")
-        if self.y not in self.data.columns:
-            raise ValueError(f"Column '{self.y}' not found in data")
+        validate_dataframe_columns(self.data, [self.x, self.y], df_name="data")
 
         # Group data by category - vectorized with groupby
         grouped = self.data.groupby(self.x)[self.y]
@@ -1015,10 +1012,7 @@ class ViolinPlotTask:
         Returns:
             Tuple of (list of ViolinView objects, FigureSpec).
         """
-        if self.x not in self.data.columns:
-            raise ValueError(f"Column '{self.x}' not found in data")
-        if self.y not in self.data.columns:
-            raise ValueError(f"Column '{self.y}' not found in data")
+        validate_dataframe_columns(self.data, [self.x, self.y], df_name="data")
 
         # Group data by category - vectorized with groupby
         grouped = self.data.groupby(self.x)[self.y]
@@ -1092,10 +1086,12 @@ class ScatterPlotTask:
         Returns:
             Tuple of (list of ScatterView objects, FigureSpec).
         """
-        if self.x not in self.data.columns:
-            raise ValueError(f"Column '{self.x}' not found in data")
-        if self.y not in self.data.columns:
-            raise ValueError(f"Column '{self.y}' not found in data")
+        required_cols = [self.x, self.y]
+        if self.color:
+            required_cols.append(self.color)
+        if self.size:
+            required_cols.append(self.size)
+        validate_dataframe_columns(self.data, required_cols, df_name="data")
 
         x_vals = self.data[self.x].values
         y_vals = self.data[self.y].values
