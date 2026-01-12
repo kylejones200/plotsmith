@@ -1,5 +1,7 @@
 """Validators for checking shapes and alignment of view objects."""
 
+from typing import Sequence
+
 import numpy as np
 
 from plotsmith.exceptions import ValidationError
@@ -312,7 +314,7 @@ def validate_violin_view(view: ViolinView) -> None:
 
 
 def validate_all_views(
-    views: list[
+    views: Sequence[
         SeriesView
         | BandView
         | ScatterView

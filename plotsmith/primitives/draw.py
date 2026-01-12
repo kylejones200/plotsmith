@@ -57,7 +57,7 @@ def draw_series(ax: "Axes", view: SeriesView) -> None:
         ax: Matplotlib axes to draw on.
         view: SeriesView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, str | float] = {}
     if view.marker is not None:
         kwargs["marker"] = view.marker
     if view.linewidth is not None:
@@ -65,7 +65,7 @@ def draw_series(ax: "Axes", view: SeriesView) -> None:
     if view.alpha is not None:
         kwargs["alpha"] = view.alpha
 
-    ax.plot(view.x, view.y, label=view.label, **kwargs)
+    ax.plot(view.x, view.y, label=view.label, **kwargs)  # type: ignore[arg-type]
 
 
 def draw_band(ax: "Axes", view: BandView) -> None:
@@ -75,11 +75,11 @@ def draw_band(ax: "Axes", view: BandView) -> None:
         ax: Matplotlib axes to draw on.
         view: BandView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, float] = {}
     if view.alpha is not None:
         kwargs["alpha"] = view.alpha
 
-    ax.fill_between(view.x, view.y_lower, view.y_upper, label=view.label, **kwargs)
+    ax.fill_between(view.x, view.y_lower, view.y_upper, label=view.label, **kwargs)  # type: ignore[arg-type]
 
 
 def draw_scatter(ax: "Axes", view: ScatterView) -> None:
@@ -89,7 +89,7 @@ def draw_scatter(ax: "Axes", view: ScatterView) -> None:
         ax: Matplotlib axes to draw on.
         view: ScatterView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, str | float | np.ndarray] = {}
     if view.marker is not None:
         kwargs["marker"] = view.marker
     if view.alpha is not None:
@@ -99,7 +99,7 @@ def draw_scatter(ax: "Axes", view: ScatterView) -> None:
     if view.c is not None:
         kwargs["c"] = view.c
 
-    ax.scatter(view.x, view.y, label=view.label, **kwargs)
+    ax.scatter(view.x, view.y, label=view.label, **kwargs)  # type: ignore[arg-type]
 
 
 def draw_histogram(ax: "Axes", view: HistogramView) -> None:
@@ -109,7 +109,7 @@ def draw_histogram(ax: "Axes", view: HistogramView) -> None:
         ax: Matplotlib axes to draw on.
         view: HistogramView containing the data to plot.
     """
-    kwargs = {}
+    kwargs: dict[str, str | float | int | np.ndarray] = {}
     if view.bins is not None:
         kwargs["bins"] = view.bins
     if view.color is not None:
@@ -121,7 +121,7 @@ def draw_histogram(ax: "Axes", view: HistogramView) -> None:
     if view.label is not None:
         kwargs["label"] = view.label
 
-    ax.hist(view.values, **kwargs)
+    ax.hist(view.values, **kwargs)  # type: ignore[arg-type]
 
 
 def draw_bar(ax: "Axes", view: BarView) -> None:

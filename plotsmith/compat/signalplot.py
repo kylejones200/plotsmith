@@ -17,7 +17,7 @@ def plot_series(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a time series (deprecated, use plot_timeseries).
 
     This function is deprecated. Use plotsmith.plot_timeseries instead.
@@ -60,7 +60,7 @@ def plot_prediction_scatter(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (8, 8),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot prediction scatter plot (deprecated, use plot_backtest).
 
     This function is deprecated. Use plotsmith.plot_backtest instead.

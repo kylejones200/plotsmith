@@ -2,10 +2,15 @@
 
 import logging
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+if TYPE_CHECKING:
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
 
 from plotsmith.objects.validate import validate_all_views
 from plotsmith.objects.views import (
@@ -68,7 +73,7 @@ def plot_timeseries(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a time series with optional confidence bands.
 
     Args:
@@ -145,7 +150,7 @@ def plot_backtest(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (8, 8),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot backtest results as scatter plot of predictions vs actuals.
 
     Args:
@@ -237,7 +242,7 @@ def plot_histogram(
     alpha: float | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a histogram (supports single or multiple overlaid histograms).
 
     Args:
@@ -342,7 +347,7 @@ def plot_bar(
     force_zero: bool = True,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a bar chart.
 
     Args:
@@ -522,7 +527,7 @@ def plot_heatmap(
     fmt: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a heatmap (correlation matrix or 2D data).
 
     Args:
@@ -595,7 +600,7 @@ def plot_model_comparison(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (12, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot multiple model predictions compared to actual data.
 
     Args:
@@ -687,7 +692,7 @@ def plot_residuals(
     add_perfect_line: bool = True,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot residuals (actual vs predicted or residuals over time).
 
     Args:
@@ -785,7 +790,7 @@ def plot_waterfall(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a waterfall chart.
 
     Args:
@@ -852,7 +857,7 @@ def plot_waffle(
     title: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a waffle chart.
 
     Args:
@@ -918,7 +923,7 @@ def plot_dumbbell(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a dumbbell chart.
 
     Args:
@@ -993,7 +998,7 @@ def plot_range(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a range chart (similar to dumbbell but different styling).
 
     Args:
@@ -1065,7 +1070,7 @@ def plot_lollipop(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a lollipop chart.
 
     Args:
@@ -1136,7 +1141,7 @@ def plot_slope(
     colors: dict[str, str] | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a slope chart.
 
     Can be called in two ways:
@@ -1258,7 +1263,7 @@ def plot_metric(
     delta_color: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (6, 4),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a metric display.
 
     Args:
@@ -1323,7 +1328,7 @@ def plot_box(
     show_means: bool = False,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a box plot.
 
     Args:
@@ -1394,7 +1399,7 @@ def plot_violin(
     show_medians: bool = True,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a violin plot.
 
     Args:
@@ -1466,7 +1471,7 @@ def plot_scatter(
     marker: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a scatter plot with optional color and size mappings.
 
     Args:
@@ -1541,7 +1546,7 @@ def plot_correlation(
     fmt: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (10, 8),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot a correlation heatmap.
 
     Args:
@@ -1605,7 +1610,7 @@ def plot_forecast_comparison(
     ylabel: str | None = None,
     save_path: str | Path | None = None,
     figsize: tuple[float, float] = (12, 6),
-) -> tuple[plt.Figure, plt.Axes]:
+) -> tuple[Figure, Axes]:
     """Plot forecast comparison with actual data and multiple forecasts.
 
     Args:
@@ -1643,13 +1648,14 @@ def plot_forecast_comparison(
         series = [v for v in views if not hasattr(v, "y_lower")]
 
         for view in bands:
-            draw_band(ax, view)
+            if hasattr(view, "y_lower"):  # type: ignore[arg-type]
+                draw_band(ax, view)  # type: ignore[arg-type]
 
         for view in series:
             if hasattr(view, "s"):  # ScatterView
-                draw_scatter(ax, view)
+                draw_scatter(ax, view)  # type: ignore[arg-type]
             else:  # SeriesView
-                draw_series(ax, view)
+                draw_series(ax, view)  # type: ignore[arg-type]
 
         apply_axes_style(ax, spec)
 

@@ -47,7 +47,7 @@ def configure_logging(
                     log_entry["exception"] = self.formatException(record.exc_info)
                 return json.dumps(log_entry)
 
-        formatter = JSONFormatter()
+        formatter: logging.Formatter = JSONFormatter()
     else:
         formatter = logging.Formatter(format_string, datefmt=DEFAULT_DATE_FORMAT)
 
