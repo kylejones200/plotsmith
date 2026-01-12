@@ -139,9 +139,8 @@ class TestResidualsPlotTask:
         """Test that ResidualsPlotTask raises error for mismatched lengths."""
         actual = np.array([1, 2, 3])
         predicted = np.array([1.1, 2.2])
-        task = ResidualsPlotTask(actual=actual, predicted=predicted)
         with pytest.raises(ValueError, match="same length"):
-            task.execute()
+            ResidualsPlotTask(actual=actual, predicted=predicted)
 
 
 class TestWaterfallPlotTask:
@@ -149,8 +148,11 @@ class TestWaterfallPlotTask:
 
     def test_waterfall_task_returns_waterfall_view(self):
         """Test that WaterfallPlotTask returns WaterfallView."""
-        df = pd.DataFrame({"Category": ["A", "B", "C"], "Value": [10, 20, 15]})
-        task = WaterfallPlotTask(df=df, categories_col="Category", values_col="Value")
+        categories = ["A", "B", "C"]
+        values = np.array([10, 20, 15])
+        task = WaterfallPlotTask(
+            categories=categories, values=values, title="Test Waterfall"
+        )
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -163,8 +165,9 @@ class TestWafflePlotTask:
 
     def test_waffle_task_returns_waffle_view(self):
         """Test that WafflePlotTask returns WaffleView."""
-        df = pd.DataFrame({"Party": ["A", "B"], "Seats": [10, 20]})
-        task = WafflePlotTask(df=df, category_col="Party", value_col="Seats")
+        categories = ["A", "B"]
+        values = np.array([10, 20])
+        task = WafflePlotTask(categories=categories, values=values, title="Test Waffle")
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -177,9 +180,14 @@ class TestDumbbellPlotTask:
 
     def test_dumbbell_task_returns_dumbbell_view(self):
         """Test that DumbbellPlotTask returns DumbbellView."""
-        df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
+        categories = ["A", "B"]
+        values1 = np.array([10, 20])
+        values2 = np.array([15, 25])
         task = DumbbellPlotTask(
-            df=df, categories_col="cat", values1_col="v1", values2_col="v2"
+            categories=categories,
+            values1=values1,
+            values2=values2,
+            title="Test Dumbbell",
         )
         views, spec = task.execute()
 
@@ -193,9 +201,14 @@ class TestRangePlotTask:
 
     def test_range_task_returns_range_view(self):
         """Test that RangePlotTask returns RangeView."""
-        df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
+        categories = ["A", "B"]
+        values1 = np.array([10, 20])
+        values2 = np.array([15, 25])
         task = RangePlotTask(
-            df=df, categories_col="cat", values1_col="v1", values2_col="v2"
+            categories=categories,
+            values1=values1,
+            values2=values2,
+            title="Test Range",
         )
         views, spec = task.execute()
 
