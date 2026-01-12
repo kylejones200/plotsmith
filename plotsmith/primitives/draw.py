@@ -613,7 +613,8 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
             color_indices = np.linspace(0.3, 1.0, n_cats)
         else:
             color_indices = [0.65]
-        colors_list = [cm.get_cmap("Blues")(idx) for idx in color_indices]  # type: ignore[attr-defined]
+        cmap = cm.get_cmap("Blues")  # type: ignore[attr-defined]
+        colors_list = [cmap(idx) for idx in color_indices]
 
     # Draw grid
     for row in range(rows):
@@ -974,7 +975,7 @@ def draw_box(ax: "Axes", view: BoxView) -> None:
     """
     bp = ax.boxplot(
         view.data,
-        labels=view.labels,  # type: ignore[arg-type]
+        labels=view.labels,  # type: ignore[call-overload]
         positions=view.positions,
         patch_artist=True,
         showmeans=view.show_means,

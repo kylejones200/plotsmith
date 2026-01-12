@@ -497,7 +497,7 @@ def small_multiples(
     )
 
     # Flatten axes grid
-    if isinstance(axes_grid, plt.Axes):  # type: ignore[arg-type]
+    if isinstance(axes_grid, plt.Axes):  # type: ignore[attr-defined]
         axes_list = [axes_grid]
     else:
         axes_list = []
