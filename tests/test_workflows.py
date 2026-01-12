@@ -10,7 +10,29 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from plotsmith.workflows.workflows import plot_backtest, plot_timeseries
+from plotsmith.workflows.workflows import (
+    figure,
+    plot_backtest,
+    plot_bar,
+    plot_box,
+    plot_correlation,
+    plot_dumbbell,
+    plot_forecast_comparison,
+    plot_heatmap,
+    plot_histogram,
+    plot_lollipop,
+    plot_metric,
+    plot_model_comparison,
+    plot_range,
+    plot_residuals,
+    plot_scatter,
+    plot_slope,
+    plot_timeseries,
+    plot_violin,
+    plot_waffle,
+    plot_waterfall,
+    small_multiples,
+)
 
 
 class TestPlotTimeseries:

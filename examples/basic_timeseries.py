@@ -1,10 +1,18 @@
-"""Basic timeseries plotting example."""
+"""Basic timeseries plotting example.
+
+This example demonstrates plotsmith working with timesmith.typing:
+1. Creates a pandas Series (SeriesLike)
+2. Validates via timesmith.typing
+3. Plots the series
+"""
 
 import numpy as np
 import pandas as pd
 from pathlib import Path
 
 from plotsmith import plot_timeseries
+from timesmith.typing import SeriesLike
+from timesmith.typing.validators import assert_series_like
 
 # Set deterministic seed
 np.random.seed(42)
@@ -15,7 +23,11 @@ trend = np.linspace(0, 10, 100)
 noise = np.random.normal(0, 1, 100)
 values = trend + noise
 
-series = pd.Series(values, index=dates, name="Synthetic Series")
+series: SeriesLike = pd.Series(values, index=dates, name="Synthetic Series")
+
+# Validate via timesmith.typing
+assert_series_like(series)
+print("✓ Validated SeriesLike via timesmith.typing")
 
 # Create confidence bands
 lower = pd.Series(values - 2, index=dates)

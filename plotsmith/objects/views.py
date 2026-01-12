@@ -56,7 +56,8 @@ class ScatterView:
         label: Optional label for the scatter (for legend).
         marker: Optional marker style (e.g., 'o', 's').
         alpha: Optional transparency (0.0 to 1.0).
-        s: Optional marker size.
+        s: Optional marker size (single value or array).
+        c: Optional marker color (single value, array, or column name for mapping).
     """
 
     x: np.ndarray
@@ -64,7 +65,8 @@ class ScatterView:
     label: Optional[str] = None
     marker: Optional[str] = None
     alpha: Optional[float] = None
-    s: Optional[float] = None
+    s: Optional[float | np.ndarray] = None
+    c: Optional[str | np.ndarray] = None
 
 
 @dataclass(frozen=True)
@@ -134,6 +136,197 @@ class HeatmapView:
     vmax: Optional[float] = None
     annotate: bool = False
     fmt: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class WaterfallView:
+    """Immutable view of waterfall chart data.
+
+    Attributes:
+        categories: Category labels for each bar.
+        values: Values for each category.
+        measures: Optional list of measure types ('absolute', 'relative', 'total').
+        colors: Optional list of colors for each bar.
+        color: Optional single color for all bars.
+    """
+
+    categories: list[str] | np.ndarray
+    values: np.ndarray
+    measures: Optional[list[str] | np.ndarray] = None
+    colors: Optional[list[str] | np.ndarray] = None
+    color: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class WaffleView:
+    """Immutable view of waffle chart data.
+
+    Attributes:
+        categories: Category labels.
+        values: Values for each category.
+        colors: Optional list of colors for each category.
+        rows: Optional number of rows in the grid.
+        columns: Optional number of columns in the grid.
+    """
+
+    categories: list[str] | np.ndarray
+    values: np.ndarray
+    colors: Optional[list[str] | np.ndarray] = None
+    rows: Optional[int] = None
+    columns: Optional[int] = None
+
+
+@dataclass(frozen=True)
+class DumbbellView:
+    """Immutable view of dumbbell chart data.
+
+    Attributes:
+        categories: Category labels.
+        values1: First set of values (left/start points).
+        values2: Second set of values (right/end points).
+        label1: Optional label for first set.
+        label2: Optional label for second set.
+        colors: Optional list of colors for each category.
+        color: Optional single color for all dumbbells.
+        orientation: 'h' for horizontal (default) or 'v' for vertical.
+    """
+
+    categories: list[str] | np.ndarray
+    values1: np.ndarray
+    values2: np.ndarray
+    label1: Optional[str] = None
+    label2: Optional[str] = None
+    colors: Optional[list[str] | np.ndarray] = None
+    color: Optional[str] = None
+    orientation: str = "h"
+
+
+@dataclass(frozen=True)
+class RangeView:
+    """Immutable view of range chart data (similar to dumbbell but different styling).
+
+    Attributes:
+        categories: Category labels.
+        values1: First set of values (left/start points).
+        values2: Second set of values (right/end points).
+        label1: Optional label for first set.
+        label2: Optional label for second set.
+        color: Optional color for the range.
+        orientation: 'h' for horizontal (default) or 'v' for vertical.
+    """
+
+    categories: list[str] | np.ndarray
+    values1: np.ndarray
+    values2: np.ndarray
+    label1: Optional[str] = None
+    label2: Optional[str] = None
+    color: Optional[str] = None
+    orientation: str = "h"
+
+
+@dataclass(frozen=True)
+class LollipopView:
+    """Immutable view of lollipop chart data.
+
+    Attributes:
+        categories: Category labels.
+        values: Values for each category.
+        color: Optional color for the lollipops.
+        marker: Optional marker style for the lollipop heads.
+        linewidth: Optional line width.
+        horizontal: If True, create horizontal lollipops.
+    """
+
+    categories: list[str] | np.ndarray
+    values: np.ndarray
+    color: Optional[str] = None
+    marker: Optional[str] = None
+    linewidth: Optional[float] = None
+    horizontal: bool = False
+
+
+@dataclass(frozen=True)
+class SlopeView:
+    """Immutable view of slope chart data.
+
+    Attributes:
+        x: X-axis values (typically two values for start and end).
+        groups: Dictionary mapping group names to y-values arrays.
+        colors: Optional dictionary mapping group names to colors.
+    """
+
+    x: np.ndarray
+    groups: dict[str, np.ndarray]
+    colors: Optional[dict[str, str]] = None
+
+
+@dataclass(frozen=True)
+class MetricView:
+    """Immutable view of metric display data.
+
+    Attributes:
+        title: Title text.
+        value: Main value to display.
+        delta: Optional change value (positive or negative).
+        prefix: Optional prefix for value (e.g., '$').
+        suffix: Optional suffix for value (e.g., '%').
+        value_color: Optional color for the value.
+        delta_color: Optional color for the delta (defaults based on sign).
+    """
+
+    title: str
+    value: float
+    delta: Optional[float] = None
+    prefix: Optional[str] = None
+    suffix: Optional[str] = None
+    value_color: Optional[str] = None
+    delta_color: Optional[str] = None
+
+
+@dataclass(frozen=True)
+class BoxView:
+    """Immutable view of box plot data.
+
+    Attributes:
+        data: List of arrays, one per box (category).
+        labels: Optional labels for each box.
+        positions: Optional positions for boxes on x-axis.
+        colors: Optional list of colors for each box.
+        color: Optional single color for all boxes.
+        show_outliers: If True, show outliers (default True).
+        show_means: If True, show means (default False).
+    """
+
+    data: list[np.ndarray]
+    labels: Optional[list[str] | np.ndarray] = None
+    positions: Optional[np.ndarray] = None
+    colors: Optional[list[str] | np.ndarray] = None
+    color: Optional[str] = None
+    show_outliers: bool = True
+    show_means: bool = False
+
+
+@dataclass(frozen=True)
+class ViolinView:
+    """Immutable view of violin plot data.
+
+    Attributes:
+        data: List of arrays, one per violin (category).
+        labels: Optional labels for each violin.
+        positions: Optional positions for violins on x-axis.
+        colors: Optional list of colors for each violin.
+        color: Optional single color for all violins.
+        show_means: If True, show means (default False).
+        show_medians: If True, show medians (default True).
+    """
+
+    data: list[np.ndarray]
+    labels: Optional[list[str] | np.ndarray] = None
+    positions: Optional[np.ndarray] = None
+    colors: Optional[list[str] | np.ndarray] = None
+    color: Optional[str] = None
+    show_means: bool = False
+    show_medians: bool = True
 
 
 @dataclass(frozen=True)

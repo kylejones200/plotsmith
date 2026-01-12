@@ -9,15 +9,39 @@ import numpy as np
 import pandas as pd
 
 from plotsmith.objects.validate import validate_all_views
-from plotsmith.objects.views import BarView, FigureSpec, HeatmapView, HistogramView, SeriesView
+from plotsmith.objects.views import (
+    BarView,
+    BoxView,
+    DumbbellView,
+    FigureSpec,
+    HeatmapView,
+    HistogramView,
+    LollipopView,
+    MetricView,
+    RangeView,
+    SeriesView,
+    SlopeView,
+    ViolinView,
+    WaffleView,
+    WaterfallView,
+)
 from plotsmith.primitives.draw import (
     apply_axes_style,
     draw_band,
     draw_bar,
+    draw_box,
+    draw_dumbbell,
     draw_heatmap,
     draw_histogram,
+    draw_lollipop,
+    draw_metric,
+    draw_range,
     draw_scatter,
     draw_series,
+    draw_slope,
+    draw_violin,
+    draw_waterfall,
+    draw_waffle,
     event_line,
     force_bar_zero,
     minimal_axes,
@@ -25,10 +49,22 @@ from plotsmith.primitives.draw import (
 from plotsmith.tasks.tasks import (
     BacktestPlotTask,
     BarPlotTask,
+    BoxPlotTask,
+    CorrelationPlotTask,
+    DumbbellPlotTask,
+    ForecastComparisonPlotTask,
     HeatmapPlotTask,
     HistogramPlotTask,
+    LollipopPlotTask,
+    MetricPlotTask,
+    RangePlotTask,
     ResidualsPlotTask,
+    ScatterPlotTask,
+    SlopePlotTask,
     TimeseriesPlotTask,
+    ViolinPlotTask,
+    WafflePlotTask,
+    WaterfallPlotTask,
 )
 
 logger = logging.getLogger(__name__)
@@ -722,5 +758,884 @@ def plot_residuals(
 
     except Exception as e:
         logger.error(f"Error in plot_residuals workflow: {e}")
+        raise
+
+
+def plot_waterfall(
+    df: pd.DataFrame,
+    categories_col: str,
+    values_col: str,
+    measure_col: Optional[str] = None,
+    colors: Optional[list[str]] = None,
+    color: Optional[str] = None,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a waterfall chart.
+
+    Args:
+        df: DataFrame with categories and values columns.
+        categories_col: Name of the categories column.
+        values_col: Name of the values column.
+        measure_col: Optional name of the measure type column ('absolute', 'relative', 'total').
+        colors: Optional list of colors for each bar.
+        color: Optional single color for all bars.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_waterfall workflow")
+    try:
+        task = WaterfallPlotTask(
+            categories=df[categories_col].tolist(),
+            values=df[values_col].values,
+            measures=df[measure_col].tolist() if measure_col and measure_col in df.columns else None,
+            colors=colors,
+            color=color,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_waterfall(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_waterfall workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_waterfall workflow: {e}")
+        raise
+
+
+def plot_waffle(
+    df: pd.DataFrame,
+    category_col: str,
+    value_col: str,
+    colors: Optional[list[str]] = None,
+    rows: Optional[int] = None,
+    columns: Optional[int] = None,
+    title: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 8),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a waffle chart.
+
+    Args:
+        df: DataFrame with category and value columns.
+        category_col: Name of the category column.
+        value_col: Name of the value column.
+        colors: Optional list of colors for each category.
+        rows: Optional number of rows in the grid.
+        columns: Optional number of columns in the grid.
+        title: Optional plot title.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_waffle workflow")
+    try:
+        task = WafflePlotTask(
+            categories=df[category_col].tolist(),
+            values=df[value_col].values,
+            colors=colors,
+            rows=rows,
+            columns=columns,
+            title=title,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_waffle(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_waffle workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_waffle workflow: {e}")
+        raise
+
+
+def plot_dumbbell(
+    df: pd.DataFrame,
+    categories_col: str,
+    values1_col: str,
+    values2_col: str,
+    label1: Optional[str] = None,
+    label2: Optional[str] = None,
+    colors: Optional[list[str]] = None,
+    color: Optional[str] = None,
+    orientation: str = "h",
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a dumbbell chart.
+
+    Args:
+        df: DataFrame with categories and two value columns.
+        categories_col: Name of the categories column.
+        values1_col: Name of the first values column.
+        values2_col: Name of the second values column.
+        label1: Optional label for first set.
+        label2: Optional label for second set.
+        colors: Optional list of colors for each category.
+        color: Optional single color for all dumbbells.
+        orientation: 'h' for horizontal (default) or 'v' for vertical.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_dumbbell workflow")
+    try:
+        task = DumbbellPlotTask(
+            categories=df[categories_col].tolist(),
+            values1=df[values1_col].values,
+            values2=df[values2_col].values,
+            label1=label1,
+            label2=label2,
+            colors=colors,
+            color=color,
+            orientation=orientation,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_dumbbell(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_dumbbell workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_dumbbell workflow: {e}")
+        raise
+
+
+def plot_range(
+    df: pd.DataFrame,
+    categories_col: str,
+    values1_col: str,
+    values2_col: str,
+    label1: Optional[str] = None,
+    label2: Optional[str] = None,
+    color: Optional[str] = None,
+    orientation: str = "h",
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a range chart (similar to dumbbell but different styling).
+
+    Args:
+        df: DataFrame with categories and two value columns.
+        categories_col: Name of the categories column.
+        values1_col: Name of the first values column.
+        values2_col: Name of the second values column.
+        label1: Optional label for first set.
+        label2: Optional label for second set.
+        color: Optional color for the range.
+        orientation: 'h' for horizontal (default) or 'v' for vertical.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_range workflow")
+    try:
+        task = RangePlotTask(
+            categories=df[categories_col].tolist(),
+            values1=df[values1_col].values,
+            values2=df[values2_col].values,
+            label1=label1,
+            label2=label2,
+            color=color,
+            orientation=orientation,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_range(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_range workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_range workflow: {e}")
+        raise
+
+
+def plot_lollipop(
+    df: pd.DataFrame,
+    categories_col: str,
+    values_col: str,
+    color: Optional[str] = None,
+    marker: Optional[str] = None,
+    linewidth: Optional[float] = None,
+    horizontal: bool = False,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a lollipop chart.
+
+    Args:
+        df: DataFrame with categories and values columns.
+        categories_col: Name of the categories column.
+        values_col: Name of the values column.
+        color: Optional color for the lollipops.
+        marker: Optional marker style for the lollipop heads.
+        linewidth: Optional line width.
+        horizontal: If True, create horizontal lollipops.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_lollipop workflow")
+    try:
+        task = LollipopPlotTask(
+            categories=df[categories_col].tolist(),
+            values=df[values_col].values,
+            color=color,
+            marker=marker,
+            linewidth=linewidth,
+            horizontal=horizontal,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_lollipop(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_lollipop workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_lollipop workflow: {e}")
+        raise
+
+
+def plot_slope(
+    data_frame: pd.DataFrame | None = None,
+    x: str | None = None,
+    y: str | None = None,
+    group: str | None = None,
+    df: pd.DataFrame | None = None,
+    categories_col: str | None = None,
+    values_cols: list[str] | None = None,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    colors: Optional[dict[str, str]] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a slope chart.
+
+    Can be called in two ways:
+    1. With long format: data_frame with x, y, and group columns
+    2. With wide format: df with categories_col and values_cols (list of column names)
+
+    Args:
+        data_frame: DataFrame with x, y, and group columns (long format).
+        x: Name of the x column (typically time periods) - for long format.
+        y: Name of the y column (values) - for long format.
+        group: Name of the group column (categories to track) - for long format.
+        df: DataFrame with categories column and value columns (wide format).
+        categories_col: Name of the categories column (for wide format).
+        values_cols: List of column names for values (for wide format).
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        colors: Optional dictionary mapping group names to colors.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_slope workflow")
+    try:
+        # Determine format and convert to groups_dict
+        if df is not None and categories_col is not None and values_cols is not None:
+            # Wide format: DataFrame with categories column and value columns
+            if categories_col not in df.columns:
+                raise ValueError(f"Column '{categories_col}' not found in DataFrame")
+            if len(df) != 2:
+                raise ValueError("DataFrame must have exactly 2 rows for slope chart")
+            
+            groups_dict = {}
+            for col in values_cols:
+                if col not in df.columns:
+                    raise ValueError(f"Column '{col}' not found in DataFrame")
+                groups_dict[col] = df[col].values
+            
+            # Use categories column as x values
+            x_unique = df[categories_col].values
+            if len(x_unique) != 2:
+                raise ValueError("categories_col must have exactly 2 unique values for slope chart")
+            x_unique = np.array(x_unique)
+        elif data_frame is not None and x is not None and y is not None and group is not None:
+            # Long format: DataFrame with x, y, and group columns
+            groups_dict = {}
+            for group_name, group_df in data_frame.groupby(group):
+                x_vals = group_df[x].values
+                y_vals = group_df[y].values
+                if len(x_vals) != 2 or len(y_vals) != 2:
+                    raise ValueError(f"Group '{group_name}' must have exactly 2 data points")
+                groups_dict[group_name] = y_vals
+
+            # Get unique x values (should be 2)
+            x_unique = sorted(data_frame[x].unique())
+            if len(x_unique) != 2:
+                raise ValueError("x column must have exactly 2 unique values for slope chart")
+            x_unique = np.array(x_unique)
+        else:
+            raise ValueError("Must provide either (data_frame, x, y, group) or (df, categories_col, values_cols)")
+
+        task = SlopePlotTask(
+            x=x_unique,
+            groups=groups_dict,
+            colors=colors,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_slope(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        # Add legend
+        ax.legend()
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_slope workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_slope workflow: {e}")
+        raise
+
+
+def plot_metric(
+    title: str,
+    value: float,
+    delta: Optional[float] = None,
+    prefix: Optional[str] = None,
+    suffix: Optional[str] = None,
+    value_color: Optional[str] = None,
+    delta_color: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (6, 4),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a metric display.
+
+    Args:
+        title: Title text.
+        value: Main value to display.
+        delta: Optional change value (positive or negative).
+        prefix: Optional prefix for value (e.g., '$').
+        suffix: Optional suffix for value (e.g., '%').
+        value_color: Optional color for the value.
+        delta_color: Optional color for the delta (defaults based on sign).
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_metric workflow")
+    try:
+        task = MetricPlotTask(
+            title=title,
+            value=value,
+            delta=delta,
+            prefix=prefix,
+            suffix=suffix,
+            value_color=value_color,
+            delta_color=delta_color,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_metric(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_metric workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_metric workflow: {e}")
+        raise
+
+
+def plot_box(
+    data: pd.DataFrame,
+    x: str,
+    y: str,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    colors: Optional[list[str]] = None,
+    color: Optional[str] = None,
+    show_outliers: bool = True,
+    show_means: bool = False,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a box plot.
+
+    Args:
+        data: DataFrame with x (category) and y (value) columns.
+        x: Name of the category column.
+        y: Name of the value column.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        colors: Optional list of colors for each box.
+        color: Optional single color for all boxes.
+        show_outliers: If True, show outliers (default True).
+        show_means: If True, show means (default False).
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_box workflow")
+    try:
+        task = BoxPlotTask(
+            data=data,
+            x=x,
+            y=y,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            colors=colors,
+            color=color,
+            show_outliers=show_outliers,
+            show_means=show_means,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_box(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_box workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_box workflow: {e}")
+        raise
+
+
+def plot_violin(
+    data: pd.DataFrame,
+    x: str,
+    y: str,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    colors: Optional[list[str]] = None,
+    color: Optional[str] = None,
+    show_means: bool = False,
+    show_medians: bool = True,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a violin plot.
+
+    Args:
+        data: DataFrame with x (category) and y (value) columns.
+        x: Name of the category column.
+        y: Name of the value column.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        colors: Optional list of colors for each violin.
+        color: Optional single color for all violins.
+        show_means: If True, show means (default False).
+        show_medians: If True, show medians (default True).
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_violin workflow")
+    try:
+        task = ViolinPlotTask(
+            data=data,
+            x=x,
+            y=y,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            colors=colors,
+            color=color,
+            show_means=show_means,
+            show_medians=show_medians,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_violin(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_violin workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_violin workflow: {e}")
+        raise
+
+
+def plot_scatter(
+    data: pd.DataFrame,
+    x: str,
+    y: str,
+    color: Optional[str] = None,
+    size: Optional[str] = None,
+    label: Optional[str] = None,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    alpha: Optional[float] = None,
+    marker: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a scatter plot with optional color and size mappings.
+
+    Args:
+        data: DataFrame with x and y columns, and optionally color/size columns.
+        x: Name of the x column.
+        y: Name of the y column.
+        color: Optional name of column to use for color mapping.
+        size: Optional name of column to use for size mapping.
+        label: Optional label for the scatter (for legend).
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        alpha: Optional transparency.
+        marker: Optional marker style.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_scatter workflow")
+    try:
+        task = ScatterPlotTask(
+            data=data,
+            x=x,
+            y=y,
+            color=color,
+            size=size,
+            label=label,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            alpha=alpha,
+            marker=marker,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_scatter(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        # Add legend if label provided
+        if label:
+            ax.legend()
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_scatter workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_scatter workflow: {e}")
+        raise
+
+
+def plot_correlation(
+    data: pd.DataFrame,
+    method: str = "pearson",
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    cmap: Optional[str] = None,
+    annotate: bool = True,
+    fmt: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (10, 8),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot a correlation heatmap.
+
+    Args:
+        data: DataFrame to compute correlation matrix from.
+        method: Correlation method ('pearson', 'kendall', 'spearman').
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        cmap: Optional colormap name (defaults to 'RdYlGn').
+        annotate: If True, annotate cells with correlation values.
+        fmt: Optional format string for annotations.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_correlation workflow")
+    try:
+        task = CorrelationPlotTask(
+            data=data,
+            method=method,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+            cmap=cmap,
+            annotate=annotate,
+            fmt=fmt,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        for view in views:
+            draw_heatmap(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_correlation workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_correlation workflow: {e}")
+        raise
+
+
+def plot_forecast_comparison(
+    actual: pd.Series | np.ndarray,
+    forecasts: dict[str, pd.Series | np.ndarray],
+    intervals: Optional[dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]] = None,
+    title: Optional[str] = None,
+    xlabel: Optional[str] = None,
+    ylabel: Optional[str] = None,
+    save_path: Optional[str | Path] = None,
+    figsize: tuple[float, float] = (12, 6),
+) -> tuple[plt.Figure, plt.Axes]:
+    """Plot forecast comparison with actual data and multiple forecasts.
+
+    Args:
+        actual: Actual time series data.
+        forecasts: Dictionary mapping forecast names to forecast arrays/Series.
+        intervals: Optional dictionary mapping forecast names to (lower, upper) interval tuples.
+        title: Optional plot title.
+        xlabel: Optional X-axis label.
+        ylabel: Optional Y-axis label.
+        save_path: Optional path to save the figure.
+        figsize: Figure size tuple (width, height).
+
+    Returns:
+        Tuple of (matplotlib Figure, Axes).
+    """
+    logger.info("Starting plot_forecast_comparison workflow")
+    try:
+        task = ForecastComparisonPlotTask(
+            actual=actual,
+            forecasts=forecasts,
+            intervals=intervals,
+            title=title,
+            xlabel=xlabel,
+            ylabel=ylabel,
+        )
+        views, spec = task.execute()
+
+        validate_all_views(views)
+
+        fig, ax = plt.subplots(figsize=figsize)
+        minimal_axes(ax)
+
+        # Draw bands first (so they're behind lines)
+        bands = [v for v in views if hasattr(v, "y_lower")]
+        series = [v for v in views if not hasattr(v, "y_lower")]
+
+        for view in bands:
+            draw_band(ax, view)
+
+        for view in series:
+            if hasattr(view, "s"):  # ScatterView
+                draw_scatter(ax, view)
+            else:  # SeriesView
+                draw_series(ax, view)
+
+        apply_axes_style(ax, spec)
+
+        # Add legend
+        ax.legend()
+
+        if save_path is not None:
+            fig.savefig(save_path, dpi=150, bbox_inches="tight")
+            logger.info(f"Saved figure to {save_path}")
+
+        logger.info("Completed plot_forecast_comparison workflow")
+        return fig, ax
+
+    except Exception as e:
+        logger.error(f"Error in plot_forecast_comparison workflow: {e}")
         raise
 

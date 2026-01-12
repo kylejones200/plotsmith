@@ -8,11 +8,20 @@ import pandas as pd
 from plotsmith.objects.views import (
     BandView,
     BarView,
+    BoxView,
+    DumbbellView,
     FigureSpec,
     HeatmapView,
     HistogramView,
+    LollipopView,
+    MetricView,
+    RangeView,
     ScatterView,
     SeriesView,
+    SlopeView,
+    ViolinView,
+    WaffleView,
+    WaterfallView,
 )
 
 
@@ -434,6 +443,809 @@ class ResidualsPlotTask:
             views.append(SeriesView(x=self.x, y=self.residuals, label="Residuals"))
         else:
             raise ValueError(f"plot_type must be 'scatter' or 'series', got {self.plot_type}")
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return views, spec
+
+
+class WaterfallPlotTask:
+    """Task to create views for waterfall chart plotting.
+
+    Accepts categories and values and produces WaterfallView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        categories: list[str] | np.ndarray,
+        values: np.ndarray | list[float],
+        measures: Optional[list[str] | np.ndarray] = None,
+        colors: Optional[list[str] | np.ndarray] = None,
+        color: Optional[str] = None,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the waterfall plot task.
+
+        Args:
+            categories: Category labels for each bar.
+            values: Values for each category.
+            measures: Optional list of measure types ('absolute', 'relative', 'total').
+            colors: Optional list of colors for each bar.
+            color: Optional single color for all bars.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
+        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
+        self.measures = list(measures) if measures is not None and isinstance(measures, np.ndarray) else measures
+        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.color = color
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[WaterfallView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of WaterfallView objects, FigureSpec).
+        """
+        view = WaterfallView(
+            categories=self.categories,
+            values=self.values,
+            measures=self.measures,
+            colors=self.colors,
+            color=self.color,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class WafflePlotTask:
+    """Task to create views for waffle chart plotting.
+
+    Accepts categories and values and produces WaffleView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        categories: list[str] | np.ndarray,
+        values: np.ndarray | list[float],
+        colors: Optional[list[str] | np.ndarray] = None,
+        rows: Optional[int] = None,
+        columns: Optional[int] = None,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the waffle plot task.
+
+        Args:
+            categories: Category labels.
+            values: Values for each category.
+            colors: Optional list of colors for each category.
+            rows: Optional number of rows in the grid.
+            columns: Optional number of columns in the grid.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
+        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
+        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.rows = rows
+        self.columns = columns
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[WaffleView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of WaffleView objects, FigureSpec).
+        """
+        view = WaffleView(
+            categories=self.categories,
+            values=self.values,
+            colors=self.colors,
+            rows=self.rows,
+            columns=self.columns,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class DumbbellPlotTask:
+    """Task to create views for dumbbell chart plotting.
+
+    Accepts categories and two sets of values and produces DumbbellView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        categories: list[str] | np.ndarray,
+        values1: np.ndarray | list[float],
+        values2: np.ndarray | list[float],
+        label1: Optional[str] = None,
+        label2: Optional[str] = None,
+        colors: Optional[list[str] | np.ndarray] = None,
+        color: Optional[str] = None,
+        orientation: str = "h",
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the dumbbell plot task.
+
+        Args:
+            categories: Category labels.
+            values1: First set of values (left/start points).
+            values2: Second set of values (right/end points).
+            label1: Optional label for first set.
+            label2: Optional label for second set.
+            colors: Optional list of colors for each category.
+            color: Optional single color for all dumbbells.
+            orientation: 'h' for horizontal (default) or 'v' for vertical.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
+        self.values1 = np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
+        self.values2 = np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        self.label1 = label1
+        self.label2 = label2
+        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.color = color
+        self.orientation = orientation
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[DumbbellView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of DumbbellView objects, FigureSpec).
+        """
+        if len(self.values1) != len(self.values2):
+            raise ValueError("values1 and values2 must have the same length")
+        if len(self.categories) != len(self.values1):
+            raise ValueError("categories must have the same length as values")
+
+        view = DumbbellView(
+            categories=self.categories,
+            values1=self.values1,
+            values2=self.values2,
+            label1=self.label1,
+            label2=self.label2,
+            colors=self.colors,
+            color=self.color,
+            orientation=self.orientation,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class RangePlotTask:
+    """Task to create views for range chart plotting.
+
+    Accepts categories and two sets of values and produces RangeView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        categories: list[str] | np.ndarray,
+        values1: np.ndarray | list[float],
+        values2: np.ndarray | list[float],
+        label1: Optional[str] = None,
+        label2: Optional[str] = None,
+        color: Optional[str] = None,
+        orientation: str = "h",
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the range plot task.
+
+        Args:
+            categories: Category labels.
+            values1: First set of values (left/start points).
+            values2: Second set of values (right/end points).
+            label1: Optional label for first set.
+            label2: Optional label for second set.
+            color: Optional color for the range.
+            orientation: 'h' for horizontal (default) or 'v' for vertical.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
+        self.values1 = np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
+        self.values2 = np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        self.label1 = label1
+        self.label2 = label2
+        self.color = color
+        self.orientation = orientation
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[RangeView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of RangeView objects, FigureSpec).
+        """
+        if len(self.values1) != len(self.values2):
+            raise ValueError("values1 and values2 must have the same length")
+        if len(self.categories) != len(self.values1):
+            raise ValueError("categories must have the same length as values")
+
+        view = RangeView(
+            categories=self.categories,
+            values1=self.values1,
+            values2=self.values2,
+            label1=self.label1,
+            label2=self.label2,
+            color=self.color,
+            orientation=self.orientation,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class LollipopPlotTask:
+    """Task to create views for lollipop chart plotting.
+
+    Accepts categories and values and produces LollipopView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        categories: list[str] | np.ndarray,
+        values: np.ndarray | list[float],
+        color: Optional[str] = None,
+        marker: Optional[str] = None,
+        linewidth: Optional[float] = None,
+        horizontal: bool = False,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the lollipop plot task.
+
+        Args:
+            categories: Category labels.
+            values: Values for each category.
+            color: Optional color for the lollipops.
+            marker: Optional marker style for the lollipop heads.
+            linewidth: Optional line width.
+            horizontal: If True, create horizontal lollipops.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
+        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
+        self.color = color
+        self.marker = marker
+        self.linewidth = linewidth
+        self.horizontal = horizontal
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[LollipopView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of LollipopView objects, FigureSpec).
+        """
+        if len(self.categories) != len(self.values):
+            raise ValueError("categories must have the same length as values")
+
+        view = LollipopView(
+            categories=self.categories,
+            values=self.values,
+            color=self.color,
+            marker=self.marker,
+            linewidth=self.linewidth,
+            horizontal=self.horizontal,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class SlopePlotTask:
+    """Task to create views for slope chart plotting.
+
+    Accepts x values and groups of y values and produces SlopeView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        x: np.ndarray | list[float],
+        groups: dict[str, np.ndarray | list[float]],
+        colors: Optional[dict[str, str]] = None,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the slope plot task.
+
+        Args:
+            x: X-axis values (typically two values for start and end).
+            groups: Dictionary mapping group names to y-values arrays.
+            colors: Optional dictionary mapping group names to colors.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.x = np.asarray(x) if not isinstance(x, np.ndarray) else x
+        self.groups = {k: (np.asarray(v) if not isinstance(v, np.ndarray) else v) for k, v in groups.items()}
+        self.colors = colors
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[SlopeView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of SlopeView objects, FigureSpec).
+        """
+        if len(self.x) != 2:
+            raise ValueError("x must have exactly 2 values for slope chart")
+        for group_name, y_values in self.groups.items():
+            if len(y_values) != 2:
+                raise ValueError(f"Group '{group_name}' must have exactly 2 y values")
+
+        view = SlopeView(x=self.x, groups=self.groups, colors=self.colors)
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class MetricPlotTask:
+    """Task to create views for metric display plotting.
+
+    Accepts title, value, and optional delta and produces MetricView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        title: str,
+        value: float,
+        delta: Optional[float] = None,
+        prefix: Optional[str] = None,
+        suffix: Optional[str] = None,
+        value_color: Optional[str] = None,
+        delta_color: Optional[str] = None,
+    ):
+        """Initialize the metric plot task.
+
+        Args:
+            title: Title text.
+            value: Main value to display.
+            delta: Optional change value (positive or negative).
+            prefix: Optional prefix for value (e.g., '$').
+            suffix: Optional suffix for value (e.g., '%').
+            value_color: Optional color for the value.
+            delta_color: Optional color for the delta (defaults based on sign).
+        """
+        self.title = title
+        self.value = value
+        self.delta = delta
+        self.prefix = prefix
+        self.suffix = suffix
+        self.value_color = value_color
+        self.delta_color = delta_color
+
+    def execute(self) -> tuple[list[MetricView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of MetricView objects, FigureSpec).
+        """
+        view = MetricView(
+            title=self.title,
+            value=self.value,
+            delta=self.delta,
+            prefix=self.prefix,
+            suffix=self.suffix,
+            value_color=self.value_color,
+            delta_color=self.delta_color,
+        )
+
+        spec = FigureSpec()
+
+        return [view], spec
+
+
+class BoxPlotTask:
+    """Task to create views for box plot plotting.
+
+    Accepts data grouped by category and produces BoxView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        x: str,
+        y: str,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+        colors: Optional[list[str]] = None,
+        color: Optional[str] = None,
+        show_outliers: bool = True,
+        show_means: bool = False,
+    ):
+        """Initialize the box plot task.
+
+        Args:
+            data: DataFrame with x (category) and y (value) columns.
+            x: Name of the category column.
+            y: Name of the value column.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+            colors: Optional list of colors for each box.
+            color: Optional single color for all boxes.
+            show_outliers: If True, show outliers (default True).
+            show_means: If True, show means (default False).
+        """
+        self.data = data
+        self.x = x
+        self.y = y
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.colors = colors
+        self.color = color
+        self.show_outliers = show_outliers
+        self.show_means = show_means
+
+    def execute(self) -> tuple[list[BoxView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of BoxView objects, FigureSpec).
+        """
+        if self.x not in self.data.columns:
+            raise ValueError(f"Column '{self.x}' not found in data")
+        if self.y not in self.data.columns:
+            raise ValueError(f"Column '{self.y}' not found in data")
+
+        # Group data by category - vectorized with groupby
+        grouped = self.data.groupby(self.x)[self.y]
+        data_list = [group.values for _, group in grouped]
+        labels = [str(cat) for cat in sorted(self.data[self.x].unique())]
+
+        view = BoxView(
+            data=data_list,
+            labels=labels,
+            colors=self.colors,
+            color=self.color,
+            show_outliers=self.show_outliers,
+            show_means=self.show_means,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+
+        return [view], spec
+
+
+class ViolinPlotTask:
+    """Task to create views for violin plot plotting.
+
+    Accepts data grouped by category and produces ViolinView objects plus a FigureSpec.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        x: str,
+        y: str,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+        colors: Optional[list[str]] = None,
+        color: Optional[str] = None,
+        show_means: bool = False,
+        show_medians: bool = True,
+    ):
+        """Initialize the violin plot task.
+
+        Args:
+            data: DataFrame with x (category) and y (value) columns.
+            x: Name of the category column.
+            y: Name of the value column.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+            colors: Optional list of colors for each violin.
+            color: Optional single color for all violins.
+            show_means: If True, show means (default False).
+            show_medians: If True, show medians (default True).
+        """
+        self.data = data
+        self.x = x
+        self.y = y
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.colors = colors
+        self.color = color
+        self.show_means = show_means
+        self.show_medians = show_medians
+
+    def execute(self) -> tuple[list[ViolinView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of ViolinView objects, FigureSpec).
+        """
+        if self.x not in self.data.columns:
+            raise ValueError(f"Column '{self.x}' not found in data")
+        if self.y not in self.data.columns:
+            raise ValueError(f"Column '{self.y}' not found in data")
+
+        # Group data by category - vectorized with groupby
+        grouped = self.data.groupby(self.x)[self.y]
+        data_list = [group.values for _, group in grouped]
+        labels = [str(cat) for cat in sorted(self.data[self.x].unique())]
+
+        view = ViolinView(
+            data=data_list,
+            labels=labels,
+            colors=self.colors,
+            color=self.color,
+            show_means=self.show_means,
+            show_medians=self.show_medians,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+
+        return [view], spec
+
+
+class ScatterPlotTask:
+    """Task to create views for scatter plot plotting with enhanced features.
+
+    Accepts DataFrame with x, y, and optional color/size columns.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        x: str,
+        y: str,
+        color: Optional[str] = None,
+        size: Optional[str] = None,
+        label: Optional[str] = None,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+        alpha: Optional[float] = None,
+        marker: Optional[str] = None,
+    ):
+        """Initialize the scatter plot task.
+
+        Args:
+            data: DataFrame with x and y columns, and optionally color/size columns.
+            x: Name of the x column.
+            y: Name of the y column.
+            color: Optional name of column to use for color mapping.
+            size: Optional name of column to use for size mapping.
+            label: Optional label for the scatter (for legend).
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+            alpha: Optional transparency.
+            marker: Optional marker style.
+        """
+        self.data = data
+        self.x = x
+        self.y = y
+        self.color = color
+        self.size = size
+        self.label = label
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.alpha = alpha
+        self.marker = marker
+
+    def execute(self) -> tuple[list[ScatterView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of ScatterView objects, FigureSpec).
+        """
+        if self.x not in self.data.columns:
+            raise ValueError(f"Column '{self.x}' not found in data")
+        if self.y not in self.data.columns:
+            raise ValueError(f"Column '{self.y}' not found in data")
+
+        x_vals = self.data[self.x].values
+        y_vals = self.data[self.y].values
+
+        # Handle color mapping - more Pythonic
+        c_vals = self.data[self.color].values if (self.color and self.color in self.data.columns) else None
+
+        # Handle size mapping - more Pythonic
+        s_vals = self.data[self.size].values if (self.size and self.size in self.data.columns) else None
+
+        view = ScatterView(
+            x=x_vals,
+            y=y_vals,
+            label=self.label,
+            marker=self.marker,
+            alpha=self.alpha,
+            s=s_vals,
+            c=c_vals,
+        )
+
+        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+
+        return [view], spec
+
+
+class CorrelationPlotTask:
+    """Task to create views for correlation heatmap plotting.
+
+    Accepts DataFrame and produces HeatmapView with correlation matrix.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        method: str = "pearson",
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+        cmap: Optional[str] = None,
+        annotate: bool = True,
+        fmt: Optional[str] = None,
+    ):
+        """Initialize the correlation plot task.
+
+        Args:
+            data: DataFrame to compute correlation matrix from.
+            method: Correlation method ('pearson', 'kendall', 'spearman').
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+            cmap: Optional colormap name.
+            annotate: If True, annotate cells with correlation values.
+            fmt: Optional format string for annotations.
+        """
+        self.data = data
+        self.method = method
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+        self.cmap = cmap or "RdYlGn"
+        self.annotate = annotate
+        self.fmt = fmt or ".2f"
+
+    def execute(self) -> tuple[list[HeatmapView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of HeatmapView objects, FigureSpec).
+        """
+        # Compute correlation matrix
+        corr_matrix = self.data.corr(method=self.method)
+
+        view = HeatmapView(
+            data=corr_matrix.values,
+            x_labels=corr_matrix.columns.tolist(),
+            y_labels=corr_matrix.index.tolist(),
+            cmap=self.cmap,
+            vmin=-1.0,
+            vmax=1.0,
+            annotate=self.annotate,
+            fmt=self.fmt,
+        )
+
+        title = self.title or f"Correlation Matrix ({self.method})"
+        spec = FigureSpec(title=title, xlabel=self.xlabel, ylabel=self.ylabel)
+
+        return [view], spec
+
+
+class ForecastComparisonPlotTask:
+    """Task to create views for forecast comparison plotting.
+
+    Accepts actual data and dictionary of forecasts, produces SeriesView and BandView objects.
+    """
+
+    def __init__(
+        self,
+        actual: pd.Series | np.ndarray,
+        forecasts: dict[str, pd.Series | np.ndarray],
+        intervals: Optional[dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]] = None,
+        title: Optional[str] = None,
+        xlabel: Optional[str] = None,
+        ylabel: Optional[str] = None,
+    ):
+        """Initialize the forecast comparison plot task.
+
+        Args:
+            actual: Actual time series data.
+            forecasts: Dictionary mapping forecast names to forecast arrays/Series.
+            intervals: Optional dictionary mapping forecast names to (lower, upper) interval tuples.
+            title: Optional plot title.
+            xlabel: Optional X-axis label.
+            ylabel: Optional Y-axis label.
+        """
+        self.actual = actual
+        self.forecasts = forecasts
+        self.intervals = intervals or {}
+        self.title = title
+        self.xlabel = xlabel
+        self.ylabel = ylabel
+
+    def execute(self) -> tuple[list[SeriesView | BandView], FigureSpec]:
+        """Execute the task and return views and figure spec.
+
+        Returns:
+            Tuple of (list of view objects, FigureSpec).
+        """
+        views: list[SeriesView | BandView] = []
+
+        # Convert actual to SeriesView
+        if isinstance(self.actual, pd.Series):
+            x = self.actual.index.values
+            y = self.actual.values
+        else:
+            x = np.arange(len(self.actual))
+            y = np.asarray(self.actual)
+
+        views.append(SeriesView(x=x, y=y, label="Actual", linewidth=2))
+
+        # Add forecasts
+        for name, forecast in self.forecasts.items():
+            if isinstance(forecast, pd.Series):
+                forecast_x = forecast.index.values
+                forecast_y = forecast.values
+            else:
+                forecast_x = x  # Use same x as actual
+                forecast_y = np.asarray(forecast)
+
+            views.append(SeriesView(x=forecast_x, y=forecast_y, label=name, linewidth=1.5, alpha=0.7))
+
+            # Add intervals if provided
+            if name in self.intervals:
+                lower, upper = self.intervals[name]
+                if isinstance(lower, pd.Series):
+                    lower_x = lower.index.values
+                    lower_y = lower.values
+                    upper_y = upper.values
+                else:
+                    lower_x = forecast_x
+                    lower_y = np.asarray(lower)
+                    upper_y = np.asarray(upper)
+
+                views.append(BandView(x=lower_x, y_lower=lower_y, y_upper=upper_y, label=f"{name} CI", alpha=0.2))
 
         spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
 

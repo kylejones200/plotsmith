@@ -9,13 +9,16 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    strategy:
+      matrix:
+        python-version: ['3.12']
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
       - name: Install deps
@@ -23,17 +26,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
-      - name: Test
+      - name: Lint check
         run: |
-          pytest -v --tb=short --maxfail=5 --durations=10
+          ruff check plotsmith/ tests/
 
-      # Optional: non-blocking checks
-      - name: Lint check (non-blocking)
-        continue-on-error: true
+      - name: Format check
         run: |
-          ruff check plotsmith/ tests/ || echo "Linting issues found (non-blocking)"
+          ruff format --check plotsmith/ tests/
 
-      - name: Type check (non-blocking)
-        continue-on-error: true
+      - name: Type check
         run: |
-          mypy plotsmith/ || echo "Type check issues found (non-blocking)"
+          mypy plotsmith/
+
+      - name: Test with coverage
+        run: |
+          pytest -v --tb=short --maxfail=5 --durations=10 --cov=plotsmith --cov-report=xml --cov-report=term-missing
+
+      - name: Check coverage threshold
+        run: |
+          coverage report --fail-under=80
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false

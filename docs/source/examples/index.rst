@@ -21,6 +21,13 @@ Python Scripts
 
 - ``examples/basic_timeseries.py`` - Basic time series example
 
+New Chart Types
+---------------
+
+Comprehensive examples for all new chart types:
+
+- :doc:`examples_new_charts` - Waterfall, Waffle, Dumbbell, Range, Lollipop, Slope, Metric, Box, Violin, Scatter, Correlation, and Forecast Comparison charts
+
 To run the notebooks, install PlotSmith with examples dependencies:
 
 .. code-block:: bash
@@ -32,4 +39,5 @@ Then open the notebooks in Jupyter:
 .. code-block:: bash
 
    jupyter notebook examples/notebooks/
+
 
