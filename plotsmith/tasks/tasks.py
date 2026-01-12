@@ -1,6 +1,5 @@
 """Tasks that convert user data into Layer 1 view objects."""
 
-
 import numpy as np
 import pandas as pd
 
@@ -76,7 +75,9 @@ class TimeseriesPlotTask:
                 y = self.data[col].values
                 views.append(SeriesView(x=x, y=y, label=col))
         else:
-            raise TypeError(f"data must be pandas Series or DataFrame, got {type(self.data)}")
+            raise TypeError(
+                f"data must be pandas Series or DataFrame, got {type(self.data)}"
+            )
 
         # Add bands if provided
         for band_name, (lower, upper) in self.bands.items():
@@ -90,7 +91,9 @@ class TimeseriesPlotTask:
             x_band = lower.index.values
             y_lower = lower.values
             y_upper = upper.values
-            views.append(BandView(x=x_band, y_lower=y_lower, y_upper=y_upper, label=band_name))
+            views.append(
+                BandView(x=x_band, y_lower=y_lower, y_upper=y_upper, label=band_name)
+            )
 
         # Create figure spec
         spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
@@ -275,7 +278,9 @@ class BarPlotTask:
         else:
             self.x = np.asarray(x)
 
-        self.height = np.asarray(height) if not isinstance(height, np.ndarray) else height
+        self.height = (
+            np.asarray(height) if not isinstance(height, np.ndarray) else height
+        )
         self.title = title
         self.xlabel = xlabel
         self.ylabel = ylabel
@@ -408,9 +413,13 @@ class ResidualsPlotTask:
             ylabel: Optional Y-axis label.
             plot_type: Type of plot - "scatter" for scatter plot, "series" for time series.
         """
-        self.actual = np.asarray(actual) if not isinstance(actual, np.ndarray) else actual
+        self.actual = (
+            np.asarray(actual) if not isinstance(actual, np.ndarray) else actual
+        )
         self.predicted = (
-            np.asarray(predicted) if not isinstance(predicted, np.ndarray) else predicted
+            np.asarray(predicted)
+            if not isinstance(predicted, np.ndarray)
+            else predicted
         )
 
         if len(self.actual) != len(self.predicted):
@@ -447,12 +456,16 @@ class ResidualsPlotTask:
 
         if self.plot_type == "scatter":
             # Scatter plot: predicted vs actual
-            views.append(ScatterView(x=self.actual, y=self.predicted, label="Residuals"))
+            views.append(
+                ScatterView(x=self.actual, y=self.predicted, label="Residuals")
+            )
         elif self.plot_type == "series":
             # Time series plot: residuals over time
             views.append(SeriesView(x=self.x, y=self.residuals, label="Residuals"))
         else:
-            raise ValueError(f"plot_type must be 'scatter' or 'series', got {self.plot_type}")
+            raise ValueError(
+                f"plot_type must be 'scatter' or 'series', got {self.plot_type}"
+            )
 
         spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
 
@@ -488,10 +501,22 @@ class WaterfallPlotTask:
             xlabel: Optional X-axis label.
             ylabel: Optional Y-axis label.
         """
-        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
-        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
-        self.measures = list(measures) if measures is not None and isinstance(measures, np.ndarray) else measures
-        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.categories = (
+            list(categories) if isinstance(categories, np.ndarray) else categories
+        )
+        self.values = (
+            np.asarray(values) if not isinstance(values, np.ndarray) else values
+        )
+        self.measures = (
+            list(measures)
+            if measures is not None and isinstance(measures, np.ndarray)
+            else measures
+        )
+        self.colors = (
+            list(colors)
+            if colors is not None and isinstance(colors, np.ndarray)
+            else colors
+        )
         self.color = color
         self.title = title
         self.xlabel = xlabel
@@ -545,9 +570,17 @@ class WafflePlotTask:
             xlabel: Optional X-axis label.
             ylabel: Optional Y-axis label.
         """
-        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
-        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
-        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.categories = (
+            list(categories) if isinstance(categories, np.ndarray) else categories
+        )
+        self.values = (
+            np.asarray(values) if not isinstance(values, np.ndarray) else values
+        )
+        self.colors = (
+            list(colors)
+            if colors is not None and isinstance(colors, np.ndarray)
+            else colors
+        )
         self.rows = rows
         self.columns = columns
         self.title = title
@@ -608,12 +641,22 @@ class DumbbellPlotTask:
             xlabel: Optional X-axis label.
             ylabel: Optional Y-axis label.
         """
-        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
-        self.values1 = np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
-        self.values2 = np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        self.categories = (
+            list(categories) if isinstance(categories, np.ndarray) else categories
+        )
+        self.values1 = (
+            np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
+        )
+        self.values2 = (
+            np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        )
         self.label1 = label1
         self.label2 = label2
-        self.colors = list(colors) if colors is not None and isinstance(colors, np.ndarray) else colors
+        self.colors = (
+            list(colors)
+            if colors is not None and isinstance(colors, np.ndarray)
+            else colors
+        )
         self.color = color
         self.orientation = orientation
         self.title = title
@@ -680,9 +723,15 @@ class RangePlotTask:
             xlabel: Optional X-axis label.
             ylabel: Optional Y-axis label.
         """
-        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
-        self.values1 = np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
-        self.values2 = np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        self.categories = (
+            list(categories) if isinstance(categories, np.ndarray) else categories
+        )
+        self.values1 = (
+            np.asarray(values1) if not isinstance(values1, np.ndarray) else values1
+        )
+        self.values2 = (
+            np.asarray(values2) if not isinstance(values2, np.ndarray) else values2
+        )
         self.label1 = label1
         self.label2 = label2
         self.color = color
@@ -748,8 +797,12 @@ class LollipopPlotTask:
             xlabel: Optional X-axis label.
             ylabel: Optional Y-axis label.
         """
-        self.categories = list(categories) if isinstance(categories, np.ndarray) else categories
-        self.values = np.asarray(values) if not isinstance(values, np.ndarray) else values
+        self.categories = (
+            list(categories) if isinstance(categories, np.ndarray) else categories
+        )
+        self.values = (
+            np.asarray(values) if not isinstance(values, np.ndarray) else values
+        )
         self.color = color
         self.marker = marker
         self.linewidth = linewidth
@@ -807,7 +860,10 @@ class SlopePlotTask:
             ylabel: Optional Y-axis label.
         """
         self.x = np.asarray(x) if not isinstance(x, np.ndarray) else x
-        self.groups = {k: (np.asarray(v) if not isinstance(v, np.ndarray) else v) for k, v in groups.items()}
+        self.groups = {
+            k: (np.asarray(v) if not isinstance(v, np.ndarray) else v)
+            for k, v in groups.items()
+        }
         self.colors = colors
         self.title = title
         self.xlabel = xlabel
@@ -954,7 +1010,9 @@ class BoxPlotTask:
             show_means=self.show_means,
         )
 
-        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+        spec = FigureSpec(
+            title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y
+        )
 
         return [view], spec
 
@@ -1025,7 +1083,9 @@ class ViolinPlotTask:
             show_medians=self.show_medians,
         )
 
-        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+        spec = FigureSpec(
+            title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y
+        )
 
         return [view], spec
 
@@ -1094,10 +1154,18 @@ class ScatterPlotTask:
         y_vals = self.data[self.y].values
 
         # Handle color mapping - more Pythonic
-        c_vals = self.data[self.color].values if (self.color and self.color in self.data.columns) else None
+        c_vals = (
+            self.data[self.color].values
+            if (self.color and self.color in self.data.columns)
+            else None
+        )
 
         # Handle size mapping - more Pythonic
-        s_vals = self.data[self.size].values if (self.size and self.size in self.data.columns) else None
+        s_vals = (
+            self.data[self.size].values
+            if (self.size and self.size in self.data.columns)
+            else None
+        )
 
         view = ScatterView(
             x=x_vals,
@@ -1109,7 +1177,9 @@ class ScatterPlotTask:
             c=c_vals,
         )
 
-        spec = FigureSpec(title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y)
+        spec = FigureSpec(
+            title=self.title, xlabel=self.xlabel or self.x, ylabel=self.ylabel or self.y
+        )
 
         return [view], spec
 
@@ -1188,7 +1258,8 @@ class ForecastComparisonPlotTask:
         self,
         actual: pd.Series | np.ndarray,
         forecasts: dict[str, pd.Series | np.ndarray],
-        intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]] | None = None,
+        intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]
+        | None = None,
         title: str | None = None,
         xlabel: str | None = None,
         ylabel: str | None = None,
@@ -1237,7 +1308,11 @@ class ForecastComparisonPlotTask:
                 forecast_x = x  # Use same x as actual
                 forecast_y = np.asarray(forecast)
 
-            views.append(SeriesView(x=forecast_x, y=forecast_y, label=name, linewidth=1.5, alpha=0.7))
+            views.append(
+                SeriesView(
+                    x=forecast_x, y=forecast_y, label=name, linewidth=1.5, alpha=0.7
+                )
+            )
 
             # Add intervals if provided
             if name in self.intervals:
@@ -1251,9 +1326,16 @@ class ForecastComparisonPlotTask:
                     lower_y = np.asarray(lower)
                     upper_y = np.asarray(upper)
 
-                views.append(BandView(x=lower_x, y_lower=lower_y, y_upper=upper_y, label=f"{name} CI", alpha=0.2))
+                views.append(
+                    BandView(
+                        x=lower_x,
+                        y_lower=lower_y,
+                        y_upper=upper_y,
+                        label=f"{name} CI",
+                        alpha=0.2,
+                    )
+                )
 
         spec = FigureSpec(title=self.title, xlabel=self.xlabel, ylabel=self.ylabel)
 
         return views, spec
-

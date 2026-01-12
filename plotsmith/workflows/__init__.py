@@ -47,4 +47,3 @@ __all__ = [
     "plot_waterfall",
     "small_multiples",
 ]
-

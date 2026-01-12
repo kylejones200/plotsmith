@@ -86,4 +86,3 @@ def get_logger(name: str) -> logging.Logger:
 
 # Configure default logging on import
 configure_logging()
-

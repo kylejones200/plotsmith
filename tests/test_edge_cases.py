@@ -50,7 +50,9 @@ class TestNaNHandling:
 
     def test_plot_timeseries_with_nan(self):
         """Test that plot_timeseries handles NaN values."""
-        data = pd.Series([1, np.nan, 3, 4, 5], index=pd.date_range("2020-01-01", periods=5))
+        data = pd.Series(
+            [1, np.nan, 3, 4, 5], index=pd.date_range("2020-01-01", periods=5)
+        )
         fig, ax = plot_timeseries(data)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
@@ -130,7 +132,9 @@ class TestLargeData:
     def test_plot_timeseries_large_data(self):
         """Test that plot_timeseries handles large datasets."""
         n = 10000
-        data = pd.Series(np.random.randn(n), index=pd.date_range("2020-01-01", periods=n))
+        data = pd.Series(
+            np.random.randn(n), index=pd.date_range("2020-01-01", periods=n)
+        )
         fig, ax = plot_timeseries(data)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
@@ -141,4 +145,3 @@ class TestLargeData:
         fig, ax = plot_histogram(data)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
-

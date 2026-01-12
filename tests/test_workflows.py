@@ -28,7 +28,8 @@ class TestPlotTimeseries:
     def test_plot_timeseries_with_dataframe(self):
         """Test that plot_timeseries works with DataFrame."""
         data = pd.DataFrame(
-            {"A": [1, 2, 3], "B": [4, 5, 6]}, index=pd.date_range("2020-01-01", periods=3)
+            {"A": [1, 2, 3], "B": [4, 5, 6]},
+            index=pd.date_range("2020-01-01", periods=3),
         )
         fig, ax = plot_timeseries(data)
 
@@ -92,4 +93,3 @@ class TestPlotBacktest:
 
         assert save_path.exists()
         plt.close(fig)
-

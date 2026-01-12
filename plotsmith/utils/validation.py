@@ -51,7 +51,9 @@ def validate_array_lengths(*arrays: Any, names: list[str] | None = None) -> None
     lengths = [len(arr) for arr in arrays]
     if len(set(lengths)) > 1:
         if names and len(names) == len(arrays):
-            length_info = ", ".join(f"{name}: {length}" for name, length in zip(names, lengths))
+            length_info = ", ".join(
+                f"{name}: {length}" for name, length in zip(names, lengths)
+            )
             raise ValidationError(
                 f"Arrays must have same length. Got: {length_info}",
                 context={"lengths": dict(zip(names, lengths))},
@@ -125,7 +127,11 @@ def validate_2d_array(data: Any, data_name: str = "data") -> None:
         if arr.ndim != 2:
             raise ValidationError(
                 f"{data_name} must be 2D, got {arr.ndim}D",
-                context={"data_type": type(data).__name__, "ndim": arr.ndim, "shape": arr.shape},
+                context={
+                    "data_type": type(data).__name__,
+                    "ndim": arr.ndim,
+                    "shape": arr.shape,
+                },
             )
 
 
@@ -183,4 +189,3 @@ def suggest_column_name(
             best_match = col
 
     return best_match
-

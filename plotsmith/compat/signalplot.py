@@ -40,7 +40,13 @@ def plot_series(
         stacklevel=2,
     )
     return plot_timeseries(
-        data=data, bands=bands, title=title, xlabel=xlabel, ylabel=ylabel, save_path=save_path, figsize=figsize
+        data=data,
+        bands=bands,
+        title=title,
+        xlabel=xlabel,
+        ylabel=ylabel,
+        save_path=save_path,
+        figsize=figsize,
     )
 
 
@@ -89,4 +95,3 @@ def plot_prediction_scatter(
         save_path=save_path,
         figsize=figsize,
     )
-

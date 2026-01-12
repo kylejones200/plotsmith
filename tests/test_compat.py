@@ -37,7 +37,9 @@ class TestCompatWrappers:
     def test_plot_prediction_scatter_emits_deprecation_warning(self):
         """Test that plot_prediction_scatter emits DeprecationWarning."""
         results = pd.DataFrame({"y_true": [1, 2, 3], "y_pred": [1.1, 2.1, 2.9]})
-        with pytest.warns(DeprecationWarning, match="plot_prediction_scatter is deprecated"):
+        with pytest.warns(
+            DeprecationWarning, match="plot_prediction_scatter is deprecated"
+        ):
             fig, ax = plot_prediction_scatter(results)
             plt.close(fig)
 
@@ -51,4 +53,3 @@ class TestCompatWrappers:
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
         plt.close(fig)
-

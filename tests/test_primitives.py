@@ -136,4 +136,3 @@ class TestApplyAxesStyle:
         assert ax.get_xlim() == (0, 10)
         assert ax.get_ylim() == (0, 20)
         plt.close(fig)
-

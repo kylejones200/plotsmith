@@ -65,4 +65,3 @@ class TaskError(PlotSmithError):
         super().__init__(message)
         self.message = message
         self.task_name = task_name
-

@@ -15,4 +15,3 @@ __all__ = [
     "validate_dataframe_columns",
     "validate_not_empty",
 ]
-

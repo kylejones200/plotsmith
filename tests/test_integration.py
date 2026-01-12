@@ -37,7 +37,9 @@ class TestCompleteWorkflows:
         # Plot
         fig, ax = plot_timeseries(
             data,
-            bands={"95% CI": (pd.Series(lower, index=dates), pd.Series(upper, index=dates))},
+            bands={
+                "95% CI": (pd.Series(lower, index=dates), pd.Series(upper, index=dates))
+            },
             title="Time Series with Confidence Bands",
             save_path=None,
         )
@@ -180,12 +182,15 @@ class TestCompleteWorkflows:
         # Create model predictions
         models = {
             "LSTM": pd.Series(actual.values + np.random.randn(100) * 0.1, index=dates),
-            "XGBoost": pd.Series(actual.values + np.random.randn(100) * 0.15, index=dates),
-            "Prophet": pd.Series(actual.values + np.random.randn(100) * 0.2, index=dates),
+            "XGBoost": pd.Series(
+                actual.values + np.random.randn(100) * 0.15, index=dates
+            ),
+            "Prophet": pd.Series(
+                actual.values + np.random.randn(100) * 0.2, index=dates
+            ),
         }
 
         # Plot comparison
         fig, ax = plot_model_comparison(actual, models, test_start_idx=80)
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
-

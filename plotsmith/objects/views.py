@@ -345,4 +345,3 @@ class FigureSpec:
     ylabel: str | None = None
     xlim: tuple[float, float] | None = None
     ylim: tuple[float, float] | None = None
-

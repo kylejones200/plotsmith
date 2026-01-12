@@ -115,7 +115,9 @@ class TestResidualsPlotTask:
         """Test that ResidualsPlotTask returns ScatterView for scatter plot."""
         actual = np.array([1, 2, 3, 4, 5])
         predicted = np.array([1.1, 2.2, 2.9, 4.1, 4.8])
-        task = ResidualsPlotTask(actual=actual, predicted=predicted, plot_type="scatter")
+        task = ResidualsPlotTask(
+            actual=actual, predicted=predicted, plot_type="scatter"
+        )
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -320,4 +322,3 @@ class TestForecastComparisonPlotTask:
 
         assert len(views) > 0
         assert isinstance(spec, FigureSpec)
-

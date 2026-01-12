@@ -50,9 +50,7 @@ class TestDrawWaffle:
     def test_draw_waffle_basic(self):
         """Test that draw_waffle runs without error."""
         fig, ax = plt.subplots()
-        view = WaffleView(
-            categories=np.array(["A", "B"]), values=np.array([10, 20])
-        )
+        view = WaffleView(categories=np.array(["A", "B"]), values=np.array([10, 20]))
         draw_waffle(ax, view)  # Should not raise
         plt.close(fig)
 
@@ -145,4 +143,3 @@ class TestDrawViolin:
         view = ViolinView(data=[np.array([1, 2, 3]), np.array([4, 5, 6])])
         draw_violin(ax, view)  # Should not raise
         plt.close(fig)
-

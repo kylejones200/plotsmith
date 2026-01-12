@@ -98,7 +98,9 @@ class TestValidateAllViews:
         views = [
             SeriesView(x=np.array([1, 2, 3]), y=np.array([10, 20, 30])),
             BandView(
-                x=np.array([1, 2, 3]), y_lower=np.array([5, 10, 15]), y_upper=np.array([15, 20, 25])
+                x=np.array([1, 2, 3]),
+                y_lower=np.array([5, 10, 15]),
+                y_upper=np.array([15, 20, 25]),
             ),
             ScatterView(x=np.array([1, 2, 3]), y=np.array([10, 20, 30])),
         ]
@@ -118,4 +120,3 @@ class TestValidateAllViews:
         views = [object()]  # Not a valid view type
         with pytest.raises(TypeError, match="Unknown view type"):
             validate_all_views(views)
-

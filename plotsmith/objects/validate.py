@@ -33,7 +33,11 @@ def validate_series_view(view: SeriesView) -> None:
     if len(view.x) != len(view.y):
         raise ValidationError(
             f"SeriesView x and y must have same length, got {len(view.x)} and {len(view.y)}",
-            context={"view_type": "SeriesView", "x_length": len(view.x), "y_length": len(view.y)},
+            context={
+                "view_type": "SeriesView",
+                "x_length": len(view.x),
+                "y_length": len(view.y),
+            },
         )
 
 
@@ -110,14 +114,22 @@ def validate_waterfall_view(view: WaterfallView) -> None:
     if len(categories) != len(values):
         raise ValidationError(
             f"WaterfallView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={"view_type": "WaterfallView", "categories_length": len(categories), "values_length": len(values)},
+            context={
+                "view_type": "WaterfallView",
+                "categories_length": len(categories),
+                "values_length": len(values),
+            },
         )
     if view.measures is not None:
         measures = np.asarray(view.measures)
         if len(measures) != len(values):
             raise ValidationError(
                 f"WaterfallView measures must have same length as values, got {len(measures)} and {len(values)}",
-                context={"view_type": "WaterfallView", "measures_length": len(measures), "values_length": len(values)},
+                context={
+                    "view_type": "WaterfallView",
+                    "measures_length": len(measures),
+                    "values_length": len(values),
+                },
             )
 
 
@@ -185,7 +197,11 @@ def validate_lollipop_view(view: LollipopView) -> None:
     if len(categories) != len(values):
         raise ValidationError(
             f"LollipopView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={"view_type": "LollipopView", "categories_length": len(categories), "values_length": len(values)},
+            context={
+                "view_type": "LollipopView",
+                "categories_length": len(categories),
+                "values_length": len(values),
+            },
         )
 
 
@@ -209,7 +225,11 @@ def validate_slope_view(view: SlopeView) -> None:
         if len(y) != 2:
             raise ValidationError(
                 f"SlopeView group '{group_name}' must have exactly 2 y values, got {len(y)}",
-                context={"view_type": "SlopeView", "group_name": group_name, "y_length": len(y)},
+                context={
+                    "view_type": "SlopeView",
+                    "group_name": group_name,
+                    "y_length": len(y),
+                },
             )
 
 
@@ -227,12 +247,19 @@ def validate_waffle_view(view: WaffleView) -> None:
     if len(categories) != len(values):
         raise ValidationError(
             f"WaffleView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={"view_type": "WaffleView", "categories_length": len(categories), "values_length": len(values)},
+            context={
+                "view_type": "WaffleView",
+                "categories_length": len(categories),
+                "values_length": len(values),
+            },
         )
     if np.any(values < 0):
         raise ValidationError(
             "WaffleView values must be non-negative",
-            context={"view_type": "WaffleView", "negative_indices": np.where(values < 0)[0].tolist()},
+            context={
+                "view_type": "WaffleView",
+                "negative_indices": np.where(values < 0)[0].tolist(),
+            },
         )
 
 
@@ -246,11 +273,17 @@ def validate_box_view(view: BoxView) -> None:
         ValueError: If data is invalid.
     """
     if not view.data:
-        raise ValidationError("BoxView data must not be empty", context={"view_type": "BoxView"})
+        raise ValidationError(
+            "BoxView data must not be empty", context={"view_type": "BoxView"}
+        )
     if view.labels is not None and len(view.labels) != len(view.data):
         raise ValidationError(
             f"BoxView labels must have same length as data, got {len(view.labels)} and {len(view.data)}",
-            context={"view_type": "BoxView", "labels_length": len(view.labels), "data_length": len(view.data)},
+            context={
+                "view_type": "BoxView",
+                "labels_length": len(view.labels),
+                "data_length": len(view.data),
+            },
         )
 
 
@@ -264,11 +297,17 @@ def validate_violin_view(view: ViolinView) -> None:
         ValueError: If data is invalid.
     """
     if not view.data:
-        raise ValidationError("ViolinView data must not be empty", context={"view_type": "ViolinView"})
+        raise ValidationError(
+            "ViolinView data must not be empty", context={"view_type": "ViolinView"}
+        )
     if view.labels is not None and len(view.labels) != len(view.data):
         raise ValidationError(
             f"ViolinView labels must have same length as data, got {len(view.labels)} and {len(view.data)}",
-            context={"view_type": "ViolinView", "labels_length": len(view.labels), "data_length": len(view.data)},
+            context={
+                "view_type": "ViolinView",
+                "labels_length": len(view.labels),
+                "data_length": len(view.data),
+            },
         )
 
 
@@ -316,7 +355,11 @@ def validate_all_views(
             if view.data.ndim != 2:
                 raise ValidationError(
                     f"HeatmapView data must be 2D, got {view.data.ndim}D",
-                    context={"view_type": "HeatmapView", "data_shape": view.data.shape, "data_ndim": view.data.ndim},
+                    context={
+                        "view_type": "HeatmapView",
+                        "data_shape": view.data.shape,
+                        "data_ndim": view.data.ndim,
+                    },
                 )
         elif isinstance(view, WaterfallView):
             validate_waterfall_view(view)
@@ -336,4 +379,3 @@ def validate_all_views(
             validate_violin_view(view)
         else:
             raise TypeError(f"Unknown view type: {type(view)}")
-

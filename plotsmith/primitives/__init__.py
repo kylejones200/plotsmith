@@ -45,4 +45,3 @@ __all__ = [
     "style_scatter_plot",
     "tidy_axes",
 ]
-

@@ -120,7 +120,9 @@ class TestPlotHeatmap:
 
     def test_plot_heatmap_with_dataframe(self):
         """Test that plot_heatmap works with DataFrame."""
-        data = pd.DataFrame(np.random.rand(3, 3), columns=["A", "B", "C"], index=["X", "Y", "Z"])
+        data = pd.DataFrame(
+            np.random.rand(3, 3), columns=["A", "B", "C"], index=["X", "Y", "Z"]
+        )
         fig, ax = plot_heatmap(data)
 
         assert isinstance(fig, plt.Figure)
@@ -215,7 +217,13 @@ class TestPlotWaterfall:
         """Test that plot_waterfall returns fig and ax."""
         df = pd.DataFrame(
             {
-                "Category": ["Revenue", "COGS", "Operating Expenses", "Taxes", "Net Profit"],
+                "Category": [
+                    "Revenue",
+                    "COGS",
+                    "Operating Expenses",
+                    "Taxes",
+                    "Net Profit",
+                ],
                 "Value": [100000, -50000, -20000, -10000, 0],
             }
         )
@@ -229,12 +237,30 @@ class TestPlotWaterfall:
         """Test that plot_waterfall works with measure types."""
         df = pd.DataFrame(
             {
-                "Category": ["Year beginning", "Profit1", "Loss1", "Q1", "Profit2", "Loss2", "Q2"],
+                "Category": [
+                    "Year beginning",
+                    "Profit1",
+                    "Loss1",
+                    "Q1",
+                    "Profit2",
+                    "Loss2",
+                    "Q2",
+                ],
                 "Value": [100, 50, -20, 0, 40, -10, 0],
-                "measure": ["absolute", "relative", "relative", "total", "relative", "relative", "total"],
+                "measure": [
+                    "absolute",
+                    "relative",
+                    "relative",
+                    "total",
+                    "relative",
+                    "relative",
+                    "total",
+                ],
             }
         )
-        fig, ax = plot_waterfall(df, categories_col="Category", values_col="Value", measure_col="measure")
+        fig, ax = plot_waterfall(
+            df, categories_col="Category", values_col="Value", measure_col="measure"
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -244,7 +270,9 @@ class TestPlotWaterfall:
         """Test that plot_waterfall can save to file."""
         df = pd.DataFrame({"Category": ["A", "B", "C"], "Value": [10, 20, 15]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_waterfall(df, categories_col="Category", values_col="Value", save_path=save_path)
+        fig, ax = plot_waterfall(
+            df, categories_col="Category", values_col="Value", save_path=save_path
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -265,7 +293,9 @@ class TestPlotWaffle:
     def test_plot_waffle_with_custom_grid(self):
         """Test that plot_waffle works with custom grid size."""
         df = pd.DataFrame({"Party": ["A", "B"], "Seats": [10, 20]})
-        fig, ax = plot_waffle(df, category_col="Party", value_col="Seats", rows=5, columns=6)
+        fig, ax = plot_waffle(
+            df, category_col="Party", value_col="Seats", rows=5, columns=6
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -275,7 +305,9 @@ class TestPlotWaffle:
         """Test that plot_waffle can save to file."""
         df = pd.DataFrame({"Party": ["A", "B"], "Seats": [10, 20]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_waffle(df, category_col="Party", value_col="Seats", save_path=save_path)
+        fig, ax = plot_waffle(
+            df, category_col="Party", value_col="Seats", save_path=save_path
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -293,7 +325,9 @@ class TestPlotDumbbell:
                 "2002": [79.59, 78.67, 78.25],
             }
         )
-        fig, ax = plot_dumbbell(df, categories_col="country", values1_col="1952", values2_col="2002")
+        fig, ax = plot_dumbbell(
+            df, categories_col="country", values1_col="1952", values2_col="2002"
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -302,7 +336,13 @@ class TestPlotDumbbell:
     def test_plot_dumbbell_vertical(self):
         """Test that plot_dumbbell works with vertical orientation."""
         df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
-        fig, ax = plot_dumbbell(df, categories_col="cat", values1_col="v1", values2_col="v2", orientation="v")
+        fig, ax = plot_dumbbell(
+            df,
+            categories_col="cat",
+            values1_col="v1",
+            values2_col="v2",
+            orientation="v",
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -312,7 +352,13 @@ class TestPlotDumbbell:
         """Test that plot_dumbbell can save to file."""
         df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_dumbbell(df, categories_col="cat", values1_col="v1", values2_col="v2", save_path=save_path)
+        fig, ax = plot_dumbbell(
+            df,
+            categories_col="cat",
+            values1_col="v1",
+            values2_col="v2",
+            save_path=save_path,
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -324,7 +370,9 @@ class TestPlotRange:
     def test_plot_range_returns_fig_ax(self):
         """Test that plot_range returns fig and ax."""
         df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
-        fig, ax = plot_range(df, categories_col="cat", values1_col="v1", values2_col="v2")
+        fig, ax = plot_range(
+            df, categories_col="cat", values1_col="v1", values2_col="v2"
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -334,7 +382,13 @@ class TestPlotRange:
         """Test that plot_range can save to file."""
         df = pd.DataFrame({"cat": ["A", "B"], "v1": [10, 20], "v2": [15, 25]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_range(df, categories_col="cat", values1_col="v1", values2_col="v2", save_path=save_path)
+        fig, ax = plot_range(
+            df,
+            categories_col="cat",
+            values1_col="v1",
+            values2_col="v2",
+            save_path=save_path,
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -355,7 +409,9 @@ class TestPlotLollipop:
     def test_plot_lollipop_horizontal(self):
         """Test that plot_lollipop works with horizontal orientation."""
         df = pd.DataFrame({"Category": ["A", "B"], "Value": [10, 20]})
-        fig, ax = plot_lollipop(df, categories_col="Category", values_col="Value", horizontal=True)
+        fig, ax = plot_lollipop(
+            df, categories_col="Category", values_col="Value", horizontal=True
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -365,7 +421,9 @@ class TestPlotLollipop:
         """Test that plot_lollipop can save to file."""
         df = pd.DataFrame({"Category": ["A", "B"], "Value": [10, 20]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_lollipop(df, categories_col="Category", values_col="Value", save_path=save_path)
+        fig, ax = plot_lollipop(
+            df, categories_col="Category", values_col="Value", save_path=save_path
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -392,7 +450,9 @@ class TestPlotSlope:
     def test_plot_slope_wide_format_returns_fig_ax(self):
         """Test that plot_slope returns fig and ax with wide format."""
         df = pd.DataFrame({"Year": [2020, 2021], "USA": [10, 12], "Canada": [12, 15]})
-        fig, ax = plot_slope(df=df, categories_col="Year", values_cols=["USA", "Canada"])
+        fig, ax = plot_slope(
+            df=df, categories_col="Year", values_cols=["USA", "Canada"]
+        )
 
         assert isinstance(fig, plt.Figure)
         assert isinstance(ax, plt.Axes)
@@ -402,7 +462,12 @@ class TestPlotSlope:
         """Test that plot_slope can save to file."""
         df = pd.DataFrame({"Year": [2020, 2021], "USA": [10, 12], "Canada": [12, 15]})
         save_path = tmp_path / "test.png"
-        fig, ax = plot_slope(df=df, categories_col="Year", values_cols=["USA", "Canada"], save_path=save_path)
+        fig, ax = plot_slope(
+            df=df,
+            categories_col="Year",
+            values_cols=["USA", "Canada"],
+            save_path=save_path,
+        )
 
         assert save_path.exists()
         plt.close(fig)
@@ -441,7 +506,9 @@ class TestPlotBox:
 
     def test_plot_box_returns_fig_ax(self):
         """Test that plot_box returns fig and ax."""
-        df = pd.DataFrame({"category": ["A", "A", "B", "B", "C", "C"], "value": [1, 2, 3, 4, 5, 6]})
+        df = pd.DataFrame(
+            {"category": ["A", "A", "B", "B", "C", "C"], "value": [1, 2, 3, 4, 5, 6]}
+        )
         fig, ax = plot_box(df, x="category", y="value")
 
         assert isinstance(fig, plt.Figure)
@@ -472,7 +539,9 @@ class TestPlotViolin:
 
     def test_plot_violin_returns_fig_ax(self):
         """Test that plot_violin returns fig and ax."""
-        df = pd.DataFrame({"category": ["A", "A", "B", "B", "C", "C"], "value": [1, 2, 3, 4, 5, 6]})
+        df = pd.DataFrame(
+            {"category": ["A", "A", "B", "B", "C", "C"], "value": [1, 2, 3, 4, 5, 6]}
+        )
         fig, ax = plot_violin(df, x="category", y="value")
 
         assert isinstance(fig, plt.Figure)
@@ -512,7 +581,9 @@ class TestPlotScatter:
 
     def test_plot_scatter_with_color(self):
         """Test that plot_scatter works with color mapping."""
-        df = pd.DataFrame({"x": [1, 2, 3], "y": [10, 20, 30], "category": ["A", "B", "A"]})
+        df = pd.DataFrame(
+            {"x": [1, 2, 3], "y": [10, 20, 30], "category": ["A", "B", "A"]}
+        )
         fig, ax = plot_scatter(df, x="x", y="y", color="category")
 
         assert isinstance(fig, plt.Figure)
@@ -574,7 +645,9 @@ class TestPlotForecastComparison:
 
     def test_plot_forecast_comparison_returns_fig_ax(self):
         """Test that plot_forecast_comparison returns fig and ax."""
-        actual = pd.Series([1, 2, 3, 4, 5], index=pd.date_range("2020-01-01", periods=5))
+        actual = pd.Series(
+            [1, 2, 3, 4, 5], index=pd.date_range("2020-01-01", periods=5)
+        )
         forecasts = {
             "Model1": pd.Series([1.1, 2.1, 2.9, 4.1, 4.9], index=actual.index),
             "Model2": pd.Series([0.9, 2.2, 3.1, 3.9, 5.1], index=actual.index),
@@ -652,4 +725,3 @@ class TestSmallMultiples:
         assert isinstance(fig, plt.Figure)
         assert len(axes) == 5
         plt.close(fig)
-

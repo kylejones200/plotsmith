@@ -132,4 +132,3 @@ class TestPerformance:
 
         result = benchmark(run)
         assert result[0] is not None
-

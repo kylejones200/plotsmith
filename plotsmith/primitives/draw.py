@@ -385,7 +385,9 @@ def note(ax: "Axes", x: float, y: float, text: str, **kwargs) -> None:
     )
 
 
-def emphasize_last(ax: "Axes", x: float, y: float, *, size: float = 30.0, **kwargs) -> None:
+def emphasize_last(
+    ax: "Axes", x: float, y: float, *, size: float = 30.0, **kwargs
+) -> None:
     """Emphasize a final point in a series using the accent color.
 
     Args:
@@ -527,10 +529,14 @@ def draw_waterfall(ax: "Axes", view: WaterfallView) -> None:
     else:
         # Default colors: green for positive, red for negative, blue for totals/absolute
         measures_arr = np.asarray(view.measures) if view.measures is not None else None
-        is_total = measures_arr == "total" if measures_arr is not None else np.zeros(n, dtype=bool)
-        is_absolute = (measures_arr == "absolute" if measures_arr is not None else None) or (
-            np.arange(n) == 0 if measures_arr is None else np.zeros(n, dtype=bool)
+        is_total = (
+            measures_arr == "total"
+            if measures_arr is not None
+            else np.zeros(n, dtype=bool)
         )
+        is_absolute = (
+            measures_arr == "absolute" if measures_arr is not None else None
+        ) or (np.arange(n) == 0 if measures_arr is None else np.zeros(n, dtype=bool))
         is_positive = values >= 0
 
         colors_list = np.where(
@@ -540,7 +546,14 @@ def draw_waterfall(ax: "Axes", view: WaterfallView) -> None:
         ).tolist()
 
     # Draw bars - vectorized
-    ax.bar(x_pos, heights, bottom=bottoms, color=colors_list, edgecolor="black", linewidth=0.5)
+    ax.bar(
+        x_pos,
+        heights,
+        bottom=bottoms,
+        color=colors_list,
+        edgecolor="black",
+        linewidth=0.5,
+    )
 
     # Set category labels
     ax.set_xticks(x_pos)
@@ -606,7 +619,14 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
         for col in range(columns):
             cat_idx = grid[row, col]
             color = colors_list[cat_idx] if cat_idx < len(colors_list) else "#cccccc"
-            rect = plt.Rectangle((col, rows - row - 1), 1, 1, facecolor=color, edgecolor="white", linewidth=0.5)
+            rect = plt.Rectangle(
+                (col, rows - row - 1),
+                1,
+                1,
+                facecolor=color,
+                edgecolor="white",
+                linewidth=0.5,
+            )
             ax.add_patch(rect)
 
     ax.set_xlim(0, columns)
@@ -645,7 +665,11 @@ def _draw_dumbbell_range(
     if colors is not None:
         color_arr = np.asarray(colors)
         if len(color_arr) < n:
-            color_arr = np.pad(color_arr, (0, n - len(color_arr)), constant_values=color_arr[-1] if len(color_arr) > 0 else "#1f77b4")
+            color_arr = np.pad(
+                color_arr,
+                (0, n - len(color_arr)),
+                constant_values=color_arr[-1] if len(color_arr) > 0 else "#1f77b4",
+            )
         colors_list = color_arr[:n].tolist()
     elif color:
         colors_list = [color] * n
@@ -656,9 +680,21 @@ def _draw_dumbbell_range(
         # Vertical orientation
         pos = np.arange(n)
         # Vectorized plotting
-        for i, (v1, v2, pos_val, col) in enumerate(zip(values1, values2, pos, colors_list)):
-            ax.plot([v1, v2], [pos_val, pos_val], color=col, linewidth=linewidth, zorder=1)
-            ax.scatter([v1, v2], [pos_val, pos_val], s=100, color=col, edgecolor="white", linewidth=1.5, zorder=2)
+        for i, (v1, v2, pos_val, col) in enumerate(
+            zip(values1, values2, pos, colors_list)
+        ):
+            ax.plot(
+                [v1, v2], [pos_val, pos_val], color=col, linewidth=linewidth, zorder=1
+            )
+            ax.scatter(
+                [v1, v2],
+                [pos_val, pos_val],
+                s=100,
+                color=col,
+                edgecolor="white",
+                linewidth=1.5,
+                zorder=2,
+            )
         ax.set_yticks(pos)
         ax.set_yticklabels(categories)
         ax.set_xlabel(label1 or "Value")
@@ -666,9 +702,21 @@ def _draw_dumbbell_range(
         # Horizontal orientation (default)
         pos = np.arange(n)
         # Vectorized plotting
-        for i, (v1, v2, pos_val, col) in enumerate(zip(values1, values2, pos, colors_list)):
-            ax.plot([v1, v2], [pos_val, pos_val], color=col, linewidth=linewidth, zorder=1)
-            ax.scatter([v1, v2], [pos_val, pos_val], s=100, color=col, edgecolor="white", linewidth=1.5, zorder=2)
+        for i, (v1, v2, pos_val, col) in enumerate(
+            zip(values1, values2, pos, colors_list)
+        ):
+            ax.plot(
+                [v1, v2], [pos_val, pos_val], color=col, linewidth=linewidth, zorder=1
+            )
+            ax.scatter(
+                [v1, v2],
+                [pos_val, pos_val],
+                s=100,
+                color=col,
+                edgecolor="white",
+                linewidth=1.5,
+                zorder=2,
+            )
         ax.set_yticks(pos)
         ax.set_yticklabels(categories)
         ax.set_xlabel(label1 or "Value")
@@ -742,8 +790,19 @@ def draw_lollipop(ax: "Axes", view: LollipopView) -> None:
         # Horizontal lollipops - vectorized
         # Draw lines and markers vectorized
         for pos_val, val in zip(pos, values):
-            ax.plot([0, val], [pos_val, pos_val], color=color, linewidth=linewidth, zorder=1)
-        ax.scatter(values, pos, s=100, color=color, marker=marker, edgecolor="white", linewidth=1.5, zorder=2)
+            ax.plot(
+                [0, val], [pos_val, pos_val], color=color, linewidth=linewidth, zorder=1
+            )
+        ax.scatter(
+            values,
+            pos,
+            s=100,
+            color=color,
+            marker=marker,
+            edgecolor="white",
+            linewidth=1.5,
+            zorder=2,
+        )
         ax.set_yticks(pos)
         ax.set_yticklabels(categories)
         ax.axvline(x=0, color="black", linewidth=0.5, linestyle="-")
@@ -751,8 +810,19 @@ def draw_lollipop(ax: "Axes", view: LollipopView) -> None:
         # Vertical lollipops (default) - vectorized
         # Draw lines and markers vectorized
         for pos_val, val in zip(pos, values):
-            ax.plot([pos_val, pos_val], [0, val], color=color, linewidth=linewidth, zorder=1)
-        ax.scatter(pos, values, s=100, color=color, marker=marker, edgecolor="white", linewidth=1.5, zorder=2)
+            ax.plot(
+                [pos_val, pos_val], [0, val], color=color, linewidth=linewidth, zorder=1
+            )
+        ax.scatter(
+            pos,
+            values,
+            s=100,
+            color=color,
+            marker=marker,
+            edgecolor="white",
+            linewidth=1.5,
+            zorder=2,
+        )
         ax.set_xticks(pos)
         ax.set_xticklabels(categories, rotation=45, ha="right")
         ax.axhline(y=0, color="black", linewidth=0.5, linestyle="-")
@@ -771,7 +841,18 @@ def draw_slope(ax: "Axes", view: SlopeView) -> None:
 
     # Default colors
     default_colors = np.array(
-        ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+        [
+            "#1f77b4",
+            "#ff7f0e",
+            "#2ca02c",
+            "#d62728",
+            "#9467bd",
+            "#8c564b",
+            "#e377c2",
+            "#7f7f7f",
+            "#bcbd22",
+            "#17becf",
+        ]
     )
 
     for i, (group_name, y_values) in enumerate(view.groups.items()):
@@ -780,10 +861,21 @@ def draw_slope(ax: "Axes", view: SlopeView) -> None:
             raise ValueError(f"Group '{group_name}' must have exactly 2 y values")
 
         # Determine color - use dict.get for cleaner code
-        color = (view.colors or {}).get(group_name, default_colors[i % len(default_colors)])
+        color = (view.colors or {}).get(
+            group_name, default_colors[i % len(default_colors)]
+        )
 
         # Draw line
-        ax.plot(x, y, color=color, linewidth=2, marker="o", markersize=8, label=group_name, zorder=2)
+        ax.plot(
+            x,
+            y,
+            color=color,
+            linewidth=2,
+            marker="o",
+            markersize=8,
+            label=group_name,
+            zorder=2,
+        )
 
     # Calculate xlim with vectorized operations
     x_range = x[1] - x[0]
@@ -801,7 +893,11 @@ def draw_metric(ax: "Axes", view: MetricView) -> None:
     ax.axis("off")
 
     # Format value
-    value_str = f"{view.value:,.0f}" if isinstance(view.value, (int, float)) else str(view.value)
+    value_str = (
+        f"{view.value:,.0f}"
+        if isinstance(view.value, (int, float))
+        else str(view.value)
+    )
     if view.prefix:
         value_str = view.prefix + value_str
     if view.suffix:
@@ -811,7 +907,11 @@ def draw_metric(ax: "Axes", view: MetricView) -> None:
     delta_str = ""
     if view.delta is not None:
         delta_val = abs(view.delta)
-        delta_str = f"{delta_val:+,.0f}" if isinstance(delta_val, (int, float)) else str(delta_val)
+        delta_str = (
+            f"{delta_val:+,.0f}"
+            if isinstance(delta_val, (int, float))
+            else str(delta_val)
+        )
         if view.suffix:
             delta_str = delta_str + view.suffix
 
@@ -826,14 +926,42 @@ def draw_metric(ax: "Axes", view: MetricView) -> None:
         delta_color = "black"
 
     # Display title
-    ax.text(0.5, 0.8, view.title, ha="center", va="top", fontsize=14, color="gray", transform=ax.transAxes)
+    ax.text(
+        0.5,
+        0.8,
+        view.title,
+        ha="center",
+        va="top",
+        fontsize=14,
+        color="gray",
+        transform=ax.transAxes,
+    )
 
     # Display value
-    ax.text(0.5, 0.5, value_str, ha="center", va="center", fontsize=32, fontweight="bold", color=value_color, transform=ax.transAxes)
+    ax.text(
+        0.5,
+        0.5,
+        value_str,
+        ha="center",
+        va="center",
+        fontsize=32,
+        fontweight="bold",
+        color=value_color,
+        transform=ax.transAxes,
+    )
 
     # Display delta
     if delta_str:
-        ax.text(0.5, 0.2, delta_str, ha="center", va="bottom", fontsize=18, color=delta_color, transform=ax.transAxes)
+        ax.text(
+            0.5,
+            0.2,
+            delta_str,
+            ha="center",
+            va="bottom",
+            fontsize=18,
+            color=delta_color,
+            transform=ax.transAxes,
+        )
 
 
 def draw_box(ax: "Axes", view: BoxView) -> None:
@@ -919,7 +1047,10 @@ def draw_violin(ax: "Axes", view: ViolinView) -> None:
 
     # Set labels if provided
     if view.labels is not None:
-        positions = view.positions if view.positions is not None else np.arange(1, len(view.data) + 1)
+        positions = (
+            view.positions
+            if view.positions is not None
+            else np.arange(1, len(view.data) + 1)
+        )
         ax.set_xticks(positions)
         ax.set_xticklabels(view.labels)
-

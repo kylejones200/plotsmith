@@ -86,7 +86,9 @@ def plot_timeseries(
     logger.info("Starting plot_timeseries workflow")
     try:
         # Create task and execute
-        task = TimeseriesPlotTask(data=data, bands=bands, title=title, xlabel=xlabel, ylabel=ylabel)
+        task = TimeseriesPlotTask(
+            data=data, bands=bands, title=title, xlabel=xlabel, ylabel=ylabel
+        )
         views, spec = task.execute()
 
         # Validate views
@@ -200,7 +202,13 @@ def plot_backtest(
             all_y = np.concatenate([v.y for v in views])
             min_val = min(all_x.min(), all_y.min())
             max_val = max(all_x.max(), all_y.max())
-            ax.plot([min_val, max_val], [min_val, max_val], "k--", alpha=0.5, label="Perfect")
+            ax.plot(
+                [min_val, max_val],
+                [min_val, max_val],
+                "k--",
+                alpha=0.5,
+                label="Perfect",
+            )
 
         # Save if path provided
         if save_path is not None:
@@ -257,7 +265,9 @@ def plot_histogram(
             views: list[HistogramView] = []
             for i, d in enumerate(data):
                 d_array = np.asarray(d) if not isinstance(d, np.ndarray) else d
-                label_val = labels[i] if labels and i < len(labels) else f"Series {i+1}"
+                label_val = (
+                    labels[i] if labels and i < len(labels) else f"Series {i + 1}"
+                )
                 color_val = colors[i] if colors and i < len(colors) else None
                 views.append(
                     HistogramView(
@@ -622,8 +632,10 @@ def plot_model_comparison(
             pred_array = np.asarray(pred) if not isinstance(pred, np.ndarray) else pred
             if len(pred_array) != len(y_actual):
                 # Align to end if different length
-                pred_array = pred_array[-len(y_actual):]
-            views.append(SeriesView(x=x, y=pred_array, label=name, linewidth=1.5, alpha=0.7))
+                pred_array = pred_array[-len(y_actual) :]
+            views.append(
+                SeriesView(x=x, y=pred_array, label=name, linewidth=1.5, alpha=0.7)
+            )
 
         # Validate views
         validate_all_views(views)
@@ -640,7 +652,9 @@ def plot_model_comparison(
 
         # Add vertical line for test start if provided
         if test_start_idx is not None and test_start_idx < len(x):
-            event_line(ax, x[test_start_idx], text="Test Start", color="black", linestyle="--")
+            event_line(
+                ax, x[test_start_idx], text="Test Start", color="black", linestyle="--"
+            )
 
         # Create figure spec
         spec = FigureSpec(title=title, xlabel=xlabel, ylabel=ylabel)
@@ -729,13 +743,21 @@ def plot_residuals(
                 all_y = view.y
                 min_val = min(all_x.min(), all_y.min())
                 max_val = max(all_x.max(), all_y.max())
-                ax.plot([min_val, max_val], [min_val, max_val], "k--", alpha=0.5, label="Perfect")
+                ax.plot(
+                    [min_val, max_val],
+                    [min_val, max_val],
+                    "k--",
+                    alpha=0.5,
+                    label="Perfect",
+                )
 
         # Apply figure spec
         apply_axes_style(ax, spec)
 
         # Add legend if any views have labels
-        if any(getattr(v, "label", None) for v in views) or (plot_type == "scatter" and add_perfect_line):
+        if any(getattr(v, "label", None) for v in views) or (
+            plot_type == "scatter" and add_perfect_line
+        ):
             ax.legend()
 
         # Save if path provided
@@ -787,7 +809,9 @@ def plot_waterfall(
         task = WaterfallPlotTask(
             categories=df[categories_col].tolist(),
             values=df[values_col].values,
-            measures=df[measure_col].tolist() if measure_col and measure_col in df.columns else None,
+            measures=df[measure_col].tolist()
+            if measure_col and measure_col in df.columns
+            else None,
             colors=colors,
             color=color,
             title=title,
@@ -1156,25 +1180,38 @@ def plot_slope(
             # Use categories column as x values
             x_unique = df[categories_col].values
             if len(x_unique) != 2:
-                raise ValueError("categories_col must have exactly 2 unique values for slope chart")
+                raise ValueError(
+                    "categories_col must have exactly 2 unique values for slope chart"
+                )
             x_unique = np.array(x_unique)
-        elif data_frame is not None and x is not None and y is not None and group is not None:
+        elif (
+            data_frame is not None
+            and x is not None
+            and y is not None
+            and group is not None
+        ):
             # Long format: DataFrame with x, y, and group columns
             groups_dict = {}
             for group_name, group_df in data_frame.groupby(group):
                 x_vals = group_df[x].values
                 y_vals = group_df[y].values
                 if len(x_vals) != 2 or len(y_vals) != 2:
-                    raise ValueError(f"Group '{group_name}' must have exactly 2 data points")
+                    raise ValueError(
+                        f"Group '{group_name}' must have exactly 2 data points"
+                    )
                 groups_dict[group_name] = y_vals
 
             # Get unique x values (should be 2)
             x_unique = sorted(data_frame[x].unique())
             if len(x_unique) != 2:
-                raise ValueError("x column must have exactly 2 unique values for slope chart")
+                raise ValueError(
+                    "x column must have exactly 2 unique values for slope chart"
+                )
             x_unique = np.array(x_unique)
         else:
-            raise ValueError("Must provide either (data_frame, x, y, group) or (df, categories_col, values_cols)")
+            raise ValueError(
+                "Must provide either (data_frame, x, y, group) or (df, categories_col, values_cols)"
+            )
 
         task = SlopePlotTask(
             x=x_unique,
@@ -1561,7 +1598,8 @@ def plot_correlation(
 def plot_forecast_comparison(
     actual: pd.Series | np.ndarray,
     forecasts: dict[str, pd.Series | np.ndarray],
-    intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]] | None = None,
+    intervals: dict[str, tuple[pd.Series | np.ndarray, pd.Series | np.ndarray]]
+    | None = None,
     title: str | None = None,
     xlabel: str | None = None,
     ylabel: str | None = None,
@@ -1628,4 +1666,3 @@ def plot_forecast_comparison(
     except Exception as e:
         logger.error(f"Error in plot_forecast_comparison workflow: {e}")
         raise
-

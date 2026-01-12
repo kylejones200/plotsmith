@@ -23,7 +23,8 @@ class TestTimeseriesPlotTask:
     def test_dataframe_input_returns_multiple_series_views(self):
         """Test that DataFrame input returns multiple SeriesView objects."""
         data = pd.DataFrame(
-            {"A": [1, 2, 3], "B": [4, 5, 6]}, index=pd.date_range("2020-01-01", periods=3)
+            {"A": [1, 2, 3], "B": [4, 5, 6]},
+            index=pd.date_range("2020-01-01", periods=3),
         )
         task = TimeseriesPlotTask(data=data)
         views, spec = task.execute()
@@ -56,7 +57,9 @@ class TestTimeseriesPlotTask:
     def test_bands_with_mismatched_indices_raises_error(self):
         """Test that bands with mismatched indices raise ValueError."""
         data = pd.Series([1, 2, 3], index=pd.date_range("2020-01-01", periods=3))
-        lower = pd.Series([0.5, 1.5], index=pd.date_range("2020-01-01", periods=2))  # Wrong length
+        lower = pd.Series(
+            [0.5, 1.5], index=pd.date_range("2020-01-01", periods=2)
+        )  # Wrong length
         upper = pd.Series([1.5, 2.5], index=pd.date_range("2020-01-01", periods=2))
         bands = {"confidence": (lower, upper)}
 
@@ -67,7 +70,9 @@ class TestTimeseriesPlotTask:
     def test_figure_spec_includes_metadata(self):
         """Test that FigureSpec includes provided metadata."""
         data = pd.Series([1, 2, 3], index=pd.date_range("2020-01-01", periods=3))
-        task = TimeseriesPlotTask(data=data, title="Test", xlabel="Time", ylabel="Value")
+        task = TimeseriesPlotTask(
+            data=data, title="Test", xlabel="Time", ylabel="Value"
+        )
         views, spec = task.execute()
 
         assert spec.title == "Test"
@@ -120,10 +125,11 @@ class TestBacktestPlotTask:
     def test_figure_spec_includes_metadata(self):
         """Test that FigureSpec includes provided metadata."""
         results = pd.DataFrame({"y_true": [1, 2, 3], "y_pred": [1.1, 2.1, 2.9]})
-        task = BacktestPlotTask(results=results, title="Test", xlabel="True", ylabel="Pred")
+        task = BacktestPlotTask(
+            results=results, title="Test", xlabel="True", ylabel="Pred"
+        )
         views, spec = task.execute()
 
         assert spec.title == "Test"
         assert spec.xlabel == "True"
         assert spec.ylabel == "Pred"
-
