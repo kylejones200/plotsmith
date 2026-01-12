@@ -14,7 +14,13 @@
 - **4-Layer Architecture**: Strict separation of concerns with clear boundaries
 - **Minimalist Styling**: Clean, publication-ready plots with serif fonts and minimal clutter
 - **Type-Safe**: Full type hints and immutable data structures
-- **Comprehensive**: Time series, scatter plots, histograms, bar charts, heatmaps, residuals, and more
+- **Comprehensive Chart Types**: 
+  - **Time Series**: Time series plots with confidence bands
+  - **Statistical**: Histograms, box plots, violin plots, scatter plots
+  - **Categorical**: Bar charts, lollipop charts, dumbbell charts, range charts
+  - **Specialized**: Waterfall charts, waffle charts, slope charts, metric displays
+  - **ML Analysis**: Residual plots, backtest visualization, model comparison, forecast comparison
+  - **Correlation**: Correlation heatmaps
 - **ML-Focused**: Built for model evaluation, backtesting, and analysis workflows
 
 ## Installation

@@ -139,9 +139,17 @@ class BacktestPlotTask:
             Tuple of (list of ScatterView objects, FigureSpec).
         """
         if self.y_true_col not in self.results.columns:
-            raise ValueError(f"Column '{self.y_true_col}' not found in results")
+            available = ", ".join(self.results.columns.tolist())
+            raise ValueError(
+                f"Column '{self.y_true_col}' not found in results. "
+                f"Available columns: {available}"
+            )
         if self.y_pred_col not in self.results.columns:
-            raise ValueError(f"Column '{self.y_pred_col}' not found in results")
+            available = ", ".join(self.results.columns.tolist())
+            raise ValueError(
+                f"Column '{self.y_pred_col}' not found in results. "
+                f"Available columns: {available}"
+            )
 
         views: list[ScatterView] = []
 
