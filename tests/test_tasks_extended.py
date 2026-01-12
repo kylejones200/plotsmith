@@ -222,8 +222,9 @@ class TestLollipopPlotTask:
 
     def test_lollipop_task_returns_lollipop_view(self):
         """Test that LollipopPlotTask returns LollipopView."""
-        df = pd.DataFrame({"Category": ["A", "B"], "Value": [10, 20]})
-        task = LollipopPlotTask(df=df, categories_col="Category", values_col="Value")
+        categories = ["A", "B"]
+        values = np.array([10, 20])
+        task = LollipopPlotTask(categories=categories, values=values, title="Test Lollipop")
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -265,7 +266,7 @@ class TestBoxPlotTask:
     def test_box_task_returns_box_view(self):
         """Test that BoxPlotTask returns BoxView."""
         df = pd.DataFrame({"category": ["A", "A", "B", "B"], "value": [1, 2, 3, 4]})
-        task = BoxPlotTask(df=df, x="category", y="value")
+        task = BoxPlotTask(data=df, x="category", y="value", title="Test Box")
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -279,7 +280,7 @@ class TestViolinPlotTask:
     def test_violin_task_returns_violin_view(self):
         """Test that ViolinPlotTask returns ViolinView."""
         df = pd.DataFrame({"category": ["A", "A", "B", "B"], "value": [1, 2, 3, 4]})
-        task = ViolinPlotTask(df=df, x="category", y="value")
+        task = ViolinPlotTask(data=df, x="category", y="value", title="Test Violin")
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -293,7 +294,7 @@ class TestScatterPlotTask:
     def test_scatter_task_returns_scatter_view(self):
         """Test that ScatterPlotTask returns ScatterView."""
         df = pd.DataFrame({"x": [1, 2, 3], "y": [10, 20, 30]})
-        task = ScatterPlotTask(df=df, x="x", y="y")
+        task = ScatterPlotTask(data=df, x="x", y="y", title="Test Scatter")
         views, spec = task.execute()
 
         assert len(views) == 1
@@ -303,7 +304,7 @@ class TestScatterPlotTask:
     def test_scatter_task_with_color(self):
         """Test that ScatterPlotTask works with color mapping."""
         df = pd.DataFrame({"x": [1, 2, 3], "y": [10, 20, 30], "c": ["A", "B", "A"]})
-        task = ScatterPlotTask(df=df, x="x", y="y", color="c")
+        task = ScatterPlotTask(data=df, x="x", y="y", color="c", title="Test Scatter")
         views, spec = task.execute()
 
         assert views[0].c is not None
