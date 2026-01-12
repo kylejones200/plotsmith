@@ -39,7 +39,7 @@ View = (
     | SlopeView
     | BoxView
     | ViolinView
-    | MetricView
+    | MetricView,
 )
 
 
