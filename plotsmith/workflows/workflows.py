@@ -114,9 +114,9 @@ def plot_timeseries(
             elif isinstance(view, BarView):
                 draw_bar(ax, view)
             elif hasattr(view, "y_lower"):  # BandView
-                draw_band(ax, view)
+                draw_band(ax, view)  # type: ignore[arg-type]
             elif hasattr(view, "s"):  # ScatterView
-                draw_scatter(ax, view)
+                draw_scatter(ax, view)  # type: ignore[arg-type]
             else:  # SeriesView
                 draw_series(ax, view)
 
@@ -430,7 +430,7 @@ def figure(
     sharex: bool = False,
     sharey: bool = False,
     constrained_layout: bool = True,
-) -> tuple[plt.Figure, plt.Axes | list[plt.Axes]]:
+) -> tuple[Figure, Axes | list[Axes]]:
     """Create a PlotSmith-styled figure.
 
     This is a light wrapper around matplotlib.pyplot.subplots that
@@ -467,7 +467,7 @@ def small_multiples(
     sharex: bool = True,
     sharey: bool = False,
     figsize: tuple[float, float] | None = None,
-) -> tuple[plt.Figure, list[plt.Axes]]:
+) -> tuple[Figure, list[Axes]]:
     """Create a grid of small-multiple axes.
 
     Returns the figure and a flat sequence of axes, already styled with
@@ -497,7 +497,7 @@ def small_multiples(
     )
 
     # Flatten axes grid
-    if isinstance(axes_grid, plt.Axes):
+    if isinstance(axes_grid, plt.Axes):  # type: ignore[arg-type]
         axes_list = [axes_grid]
     else:
         axes_list = []
@@ -736,7 +736,7 @@ def plot_residuals(
         # Draw all views
         for view in views:
             if hasattr(view, "s"):  # ScatterView
-                draw_scatter(ax, view)
+                draw_scatter(ax, view)  # type: ignore[arg-type]
             else:  # SeriesView
                 draw_series(ax, view)
 
@@ -1648,14 +1648,14 @@ def plot_forecast_comparison(
         series = [v for v in views if not hasattr(v, "y_lower")]
 
         for view in bands:
-            if hasattr(view, "y_lower"):  # type: ignore[arg-type]
+            if hasattr(view, "y_lower"):
                 draw_band(ax, view)  # type: ignore[arg-type]
 
         for view in series:
             if hasattr(view, "s"):  # ScatterView
                 draw_scatter(ax, view)  # type: ignore[arg-type]
             else:  # SeriesView
-                draw_series(ax, view)  # type: ignore[arg-type]
+                draw_series(ax, view)
 
         apply_axes_style(ax, spec)
 

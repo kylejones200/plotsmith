@@ -294,9 +294,9 @@ def style_scatter_plot(ax: "Axes") -> None:
     tidy_axes(ax)
 
     for collection in ax.collections:
-        collection.set_edgecolors("#000000")
-        collection.set_facecolors("#FFFFFF")
-        collection.set_linewidths(1.0)
+        collection.set_edgecolors("#000000")  # type: ignore[attr-defined]
+        collection.set_facecolors("#FFFFFF")  # type: ignore[attr-defined]
+        collection.set_linewidths(1.0)  # type: ignore[attr-defined]
 
 
 def style_bar_plot(ax: "Axes", *, horizontal: bool = False) -> None:
@@ -584,8 +584,9 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
         columns = view.columns
         rows = int(np.ceil(total / columns))
     else:
-        rows = view.rows
-        columns = view.columns
+        # Default: 10x10 grid
+        rows = 10
+        columns = 10
 
     # Create grid
     grid = np.zeros((rows, columns), dtype=int)
@@ -612,7 +613,7 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
             color_indices = np.linspace(0.3, 1.0, n_cats)
         else:
             color_indices = [0.65]
-        colors_list = [cm.Blues(idx) for idx in color_indices]
+        colors_list = [cm.get_cmap("Blues")(idx) for idx in color_indices]  # type: ignore[attr-defined]
 
     # Draw grid
     for row in range(rows):
@@ -973,7 +974,7 @@ def draw_box(ax: "Axes", view: BoxView) -> None:
     """
     bp = ax.boxplot(
         view.data,
-        labels=view.labels,
+        labels=view.labels,  # type: ignore[arg-type]
         positions=view.positions,
         patch_artist=True,
         showmeans=view.show_means,
@@ -1024,19 +1025,19 @@ def draw_violin(ax: "Axes", view: ViolinView) -> None:
     bodies = parts["bodies"]
     if view.color:
         for pc in bodies:
-            pc.set_facecolor(view.color)
-            pc.set_alpha(0.7)
+            pc.set_facecolor(view.color)  # type: ignore[attr-defined]
+            pc.set_alpha(0.7)  # type: ignore[attr-defined]
     elif view.colors:
         colors_arr = np.asarray(view.colors)
-        for i, pc in enumerate(bodies):
+        for i, pc in enumerate(bodies):  # type: ignore[arg-type]
             if i < len(colors_arr):
-                pc.set_facecolor(colors_arr[i])
-                pc.set_alpha(0.7)
+                pc.set_facecolor(colors_arr[i])  # type: ignore[attr-defined]
+                pc.set_alpha(0.7)  # type: ignore[attr-defined]
 
     # Style violins
     for pc in bodies:
-        pc.set_edgecolor("black")
-        pc.set_linewidth(1.0)
+        pc.set_edgecolor("black")  # type: ignore[attr-defined]
+        pc.set_linewidth(1.0)  # type: ignore[attr-defined]
 
     # Style other elements - more Pythonic
     style_elements = ["cmeans", "cmedians", "cbars", "cmins", "cmaxes"]
