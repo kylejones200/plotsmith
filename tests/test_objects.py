@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+from plotsmith.exceptions import ValidationError
 from plotsmith.objects.validate import (
     validate_all_views,
     validate_band_view,
