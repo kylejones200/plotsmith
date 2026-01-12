@@ -23,6 +23,11 @@ from plotsmith.objects.views import (
     WaffleView,
     WaterfallView,
 )
+from plotsmith.utils.validation import (
+    suggest_column_name,
+    validate_dataframe_columns,
+    validate_not_empty,
+)
 
 
 class TimeseriesPlotTask:

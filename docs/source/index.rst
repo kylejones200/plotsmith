@@ -12,6 +12,7 @@ PlotSmith Documentation
    architecture
    api/index
    examples/index
+   performance
    troubleshooting
    contributing
 
