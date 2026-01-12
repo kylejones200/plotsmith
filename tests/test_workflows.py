@@ -31,7 +31,6 @@ from plotsmith.workflows.workflows import (
     plot_violin,
     plot_waffle,
     plot_waterfall,
-    small_multiples,
 )
 
 
