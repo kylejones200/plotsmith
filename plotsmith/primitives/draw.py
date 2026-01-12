@@ -1030,7 +1030,7 @@ def draw_violin(ax: "Axes", view: ViolinView) -> None:
             pc.set_alpha(0.7)  # type: ignore[attr-defined]
     elif view.colors:
         colors_arr = np.asarray(view.colors)
-        for i, pc in enumerate(bodies):  # type: ignore[attr-defined]
+        for i, pc in enumerate(bodies):  # type: ignore[attr-defined,arg-type]
             if i < len(colors_arr):
                 pc.set_facecolor(colors_arr[i])  # type: ignore[attr-defined]
                 pc.set_alpha(0.7)  # type: ignore[attr-defined]
