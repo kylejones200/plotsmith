@@ -224,7 +224,9 @@ class TestLollipopPlotTask:
         """Test that LollipopPlotTask returns LollipopView."""
         categories = ["A", "B"]
         values = np.array([10, 20])
-        task = LollipopPlotTask(categories=categories, values=values, title="Test Lollipop")
+        task = LollipopPlotTask(
+            categories=categories, values=values, title="Test Lollipop"
+        )
         views, spec = task.execute()
 
         assert len(views) == 1
