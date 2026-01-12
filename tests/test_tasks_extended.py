@@ -316,7 +316,7 @@ class TestCorrelationPlotTask:
     def test_correlation_task_returns_heatmap_view(self):
         """Test that CorrelationPlotTask returns HeatmapView."""
         df = pd.DataFrame({"A": [1, 2, 3], "B": [2, 4, 6]})
-        task = CorrelationPlotTask(df=df)
+        task = CorrelationPlotTask(data=df, title="Test Correlation")
         views, spec = task.execute()
 
         assert len(views) == 1

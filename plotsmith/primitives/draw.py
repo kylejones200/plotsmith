@@ -529,18 +529,16 @@ def draw_waterfall(ax: "Axes", view: WaterfallView) -> None:
     else:
         # Default colors: green for positive, red for negative, blue for totals/absolute
         measures_arr = np.asarray(view.measures) if view.measures is not None else None
-        is_total = (
-            measures_arr == "total"
-            if measures_arr is not None
-            else np.zeros(n, dtype=bool)
-        )
-        is_absolute = (
-            measures_arr == "absolute" if measures_arr is not None else None
-        ) or (np.arange(n) == 0 if measures_arr is None else np.zeros(n, dtype=bool))
+        if measures_arr is not None:
+            is_total = measures_arr == "total"
+            is_absolute = measures_arr == "absolute"
+        else:
+            is_total = np.zeros(n, dtype=bool)
+            is_absolute = np.arange(n) == 0
         is_positive = values >= 0
 
         colors_list = np.where(
-            is_total | (np.arange(n) == 0 if measures_arr is None else is_absolute),
+            is_total | is_absolute,
             "#1f77b4",  # blue
             np.where(is_positive, "#2ca02c", "#d62728"),  # green or red
         ).tolist()
