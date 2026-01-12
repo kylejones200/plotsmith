@@ -4,7 +4,6 @@ import warnings
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import matplotlib.pyplot as plt
 import pandas as pd
 
 if TYPE_CHECKING:
