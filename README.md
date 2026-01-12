@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/plotsmith.svg)](https://badge.fury.io/py/plotsmith)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://github.com/kylejones200/plotsmith/workflows/Tests/badge.svg)](https://github.com/kylejones200/plotsmith/actions)
+[![CI](https://github.com/kylejones200/plotsmith/actions/workflows/ci.yml/badge.svg)](https://github.com/kylejones200/plotsmith/actions)
 [![Documentation](https://readthedocs.org/projects/plotsmith/badge/?version=latest)](https://plotsmith.readthedocs.io/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
