@@ -610,7 +610,7 @@ def draw_waffle(ax: "Axes", view: WaffleView) -> None:
         # Default blue gradient - vectorized
         n_cats = len(categories)
         if n_cats > 1:
-            color_indices = np.linspace(0.3, 1.0, n_cats)
+            color_indices: np.ndarray = np.linspace(0.3, 1.0, n_cats)
         else:
             color_indices: list[float] = [0.65]
         cmap = cm.get_cmap("Blues")  # type: ignore[attr-defined]
@@ -1032,8 +1032,8 @@ def draw_violin(ax: "Axes", view: ViolinView) -> None:
         colors_arr = np.asarray(view.colors)
         for i, pc in enumerate(bodies):  # type: ignore[union-attr,arg-type]
             if i < len(colors_arr):
-                pc.set_facecolor(colors_arr[i])  # type: ignore[attr-defined]
-                pc.set_alpha(0.7)  # type: ignore[attr-defined]
+                pc.set_facecolor(colors_arr[i])  # type: ignore[attr-defined,union-attr]
+                pc.set_alpha(0.7)  # type: ignore[attr-defined,union-attr]
 
     # Style violins
     for pc in bodies:  # type: ignore[union-attr]
