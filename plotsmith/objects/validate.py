@@ -330,6 +330,7 @@ def validate_all_views(
         | SlopeView
         | BoxView
         | ViolinView
+        | MetricView
     ],
 ) -> None:
     """Validate a list of views.
