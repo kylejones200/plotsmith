@@ -211,7 +211,7 @@ def apply_axes_style(ax: "Axes", spec: FigureSpec) -> None:
 
 
 def tidy_axes(ax: "Axes") -> None:
-    """Clean up axes spines and ticks following SignalPlot style.
+    """Clean up axes spines and ticks with minimalist styling.
 
     Removes top and right spines, colors remaining spines gray,
     and adjusts tick parameters.

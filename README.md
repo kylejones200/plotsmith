@@ -76,7 +76,7 @@ Drawing functions that accept only Layer 1 objects. **All matplotlib calls here.
 
 - `draw_series()`, `draw_scatter()`, `draw_histogram()`, `draw_bar()`, `draw_heatmap()`
 - `minimal_axes()` - Minimalist axes styling
-- `tidy_axes()` - SignalPlot-style axes cleanup
+- `tidy_axes()` - Minimalist axes cleanup
 - `style_line_plot()`, `style_scatter_plot()`, `style_bar_plot()`
 - `event_line()`, `direct_label()`, `note()`, `accent_point()`
 
@@ -232,7 +232,7 @@ from plotsmith import minimal_axes, tidy_axes, event_line, direct_label, ACCENT
 fig, ax = plt.subplots()
 minimal_axes(ax)  # Minimalist styling (serif font, clean spines)
 # or
-tidy_axes(ax)     # SignalPlot-style (gray spines, clean ticks)
+tidy_axes(ax)     # Minimalist style (gray spines, clean ticks)
 
 # Add event markers
 event_line(ax, x=2020, text='Policy Change', color=ACCENT)
