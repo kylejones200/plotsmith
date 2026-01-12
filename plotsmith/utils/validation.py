@@ -8,8 +8,12 @@ import pandas as pd
 from plotsmith.exceptions import ValidationError
 
 # Type aliases for array-like data
-ArrayLike = np.ndarray | pd.Series | list[float] | Sequence[float]
-DataContainer = np.ndarray | pd.Series | pd.DataFrame | list | Sequence
+ArrayLike = (
+    np.ndarray | pd.Series | list[float] | Sequence[float]
+)
+DataContainer = (
+    np.ndarray | pd.Series | pd.DataFrame | list | Sequence
+)
 
 
 def validate_dataframe_columns(
