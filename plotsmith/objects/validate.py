@@ -13,6 +13,7 @@ from plotsmith.objects.views import (
     HeatmapView,
     HistogramView,
     LollipopView,
+    MetricView,
     RangeView,
     ScatterView,
     SeriesView,
@@ -379,5 +380,8 @@ def validate_all_views(
             validate_box_view(view)
         elif isinstance(view, ViolinView):
             validate_violin_view(view)
+        elif isinstance(view, MetricView):
+            # MetricView doesn't need validation (just displays a value)
+            pass
         else:
             raise TypeError(f"Unknown view type: {type(view)}")
