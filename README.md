@@ -255,10 +255,10 @@ This generates `examples/out/basic_timeseries.png` with a time series plot inclu
 
 ## Requirements
 
-- Python 3.12+
-- matplotlib >= 3.5.0
-- numpy >= 1.20.0
-- pandas >= 1.3.0
+- Python 3.12+ (only)
+- matplotlib >= 3.5.0, < 4.0.0
+- numpy >= 1.20.0, < 3.0.0
+- pandas >= 1.3.0, < 3.0.0
 
 ## Development
 
