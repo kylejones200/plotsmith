@@ -1320,7 +1320,11 @@ class ForecastComparisonPlotTask:
                 if isinstance(lower, pd.Series):
                     lower_x = lower.index.values
                     lower_y = lower.values
-                    upper_y = upper.values if isinstance(upper, pd.Series) else np.asarray(upper)
+                    upper_y = (
+                        upper.values
+                        if isinstance(upper, pd.Series)
+                        else np.asarray(upper)
+                    )
                 else:
                     lower_x = forecast_x
                     lower_y = np.asarray(lower)
