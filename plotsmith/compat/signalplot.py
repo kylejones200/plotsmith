@@ -2,13 +2,10 @@
 
 import warnings
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pandas as pd
-
-if TYPE_CHECKING:
-    from matplotlib.axes import Axes
-    from matplotlib.figure import Figure
+from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 
 from plotsmith.workflows.workflows import plot_backtest, plot_timeseries
 
