@@ -9,3 +9,4 @@ View objects are immutable dataclasses that represent plot-ready data.
    :show-inheritance:
 
 
+

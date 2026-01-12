@@ -1,11 +1,16 @@
 """Validation utilities for PlotSmith."""
 
-from typing import Any
+from collections.abc import Sequence
+from typing import Union
 
 import numpy as np
 import pandas as pd
 
 from plotsmith.exceptions import ValidationError
+
+# Type aliases for array-like data
+ArrayLike = Union[np.ndarray, pd.Series, list[float], Sequence[float]]
+DataContainer = Union[np.ndarray, pd.Series, pd.DataFrame, list, Sequence]
 
 
 def validate_dataframe_columns(
@@ -35,15 +40,24 @@ def validate_dataframe_columns(
         )
 
 
-def validate_array_lengths(*arrays: Any, names: list[str] | None = None) -> None:
+def validate_array_lengths(
+    *arrays: ArrayLike, names: list[str] | None = None
+) -> None:
     """Validate that multiple arrays have the same length.
 
     Args:
-        *arrays: Variable number of arrays to validate.
+        *arrays: Variable number of arrays to validate. Accepts:
+            - numpy.ndarray
+            - pandas.Series
+            - list[float]
+            - Sequence[float]
         names: Optional list of names for each array (for error messages).
 
     Raises:
         ValidationError: If arrays have mismatched lengths.
+
+    Returns:
+        None: Raises ValidationError if validation fails.
     """
     if len(arrays) < 2:
         return
@@ -65,11 +79,16 @@ def validate_array_lengths(*arrays: Any, names: list[str] | None = None) -> None
             )
 
 
-def validate_not_empty(data: Any, data_name: str = "data") -> None:
+def validate_not_empty(data: DataContainer, data_name: str = "data") -> None:
     """Validate that data is not empty.
 
     Args:
-        data: Data to validate (array, Series, DataFrame, or list).
+        data: Data to validate. Accepts:
+            - numpy.ndarray
+            - pandas.Series
+            - pandas.DataFrame
+            - list
+            - Any sequence with __len__ method
         data_name: Name of the data for error messages.
 
     Raises:
@@ -105,15 +124,24 @@ def validate_not_empty(data: Any, data_name: str = "data") -> None:
             pass
 
 
-def validate_2d_array(data: Any, data_name: str = "data") -> None:
+def validate_2d_array(
+    data: Union[np.ndarray, pd.DataFrame, Sequence[Sequence[float]]],
+    data_name: str = "data",
+) -> None:
     """Validate that data is a 2D array.
 
     Args:
-        data: Data to validate.
+        data: Data to validate. Accepts:
+            - numpy.ndarray (2D)
+            - pandas.DataFrame
+            - Sequence[Sequence[float]] (nested sequences)
         data_name: Name of the data for error messages.
 
     Raises:
         ValidationError: If data is not 2D.
+
+    Returns:
+        None: Raises ValidationError if validation fails.
     """
     if isinstance(data, pd.DataFrame):
         # DataFrame is always 2D, but check if it's empty
@@ -189,3 +217,4 @@ def suggest_column_name(
             best_match = col
 
     return best_match
+

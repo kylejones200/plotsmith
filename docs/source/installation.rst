@@ -50,3 +50,4 @@ To install PlotSmith in development mode:
 This installs PlotSmith in editable mode with all development dependencies.
 
 
+

@@ -219,3 +219,4 @@ Example Issue Template:
    data = pd.Series([1, 2, 3])
    fig, ax = plot_timeseries(data)  # Error occurs here
 
+

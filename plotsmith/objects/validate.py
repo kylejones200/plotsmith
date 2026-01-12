@@ -5,6 +5,25 @@ from collections.abc import Sequence
 import numpy as np
 
 from plotsmith.exceptions import ValidationError
+
+# Union type for all possible view types
+View = (
+    SeriesView
+    | BandView
+    | ScatterView
+    | HistogramView
+    | BarView
+    | HeatmapView
+    | WaterfallView
+    | WaffleView
+    | DumbbellView
+    | RangeView
+    | LollipopView
+    | SlopeView
+    | BoxView
+    | ViolinView
+    | MetricView
+)
 from plotsmith.objects.views import (
     BandView,
     BarView,
@@ -24,6 +43,35 @@ from plotsmith.objects.views import (
 )
 
 
+def _validate_matching_lengths(
+    *arrays: np.ndarray | list,
+    names: list[str],
+    view_type: str,
+) -> None:
+    """Helper to validate multiple arrays have matching lengths.
+
+    Args:
+        *arrays: Variable number of arrays to validate.
+        names: Names for each array (for error messages).
+        view_type: Type of view being validated (for error messages).
+
+    Raises:
+        ValidationError: If arrays have mismatched lengths.
+    """
+    lengths = [len(arr) for arr in arrays]
+    if len(set(lengths)) > 1:
+        length_info = ", ".join(
+            f"{name}: {length}" for name, length in zip(names, lengths)
+        )
+        raise ValidationError(
+            f"{view_type} {', '.join(names)} must have same length. Got: {length_info}",
+            context={
+                "view_type": view_type,
+                "lengths": dict(zip(names, lengths)),
+            },
+        )
+
+
 def validate_series_view(view: SeriesView) -> None:
     """Validate that a SeriesView has matching x and y lengths.
 
@@ -33,15 +81,9 @@ def validate_series_view(view: SeriesView) -> None:
     Raises:
         ValidationError: If x and y arrays have mismatched lengths.
     """
-    if len(view.x) != len(view.y):
-        raise ValidationError(
-            f"SeriesView x and y must have same length, got {len(view.x)} and {len(view.y)}",
-            context={
-                "view_type": "SeriesView",
-                "x_length": len(view.x),
-                "y_length": len(view.y),
-            },
-        )
+    _validate_matching_lengths(
+        view.x, view.y, names=["x", "y"], view_type="SeriesView"
+    )
 
 
 def validate_band_view(view: BandView) -> None:
@@ -53,18 +95,13 @@ def validate_band_view(view: BandView) -> None:
     Raises:
         ValidationError: If arrays have mismatched lengths.
     """
-    if len(view.x) != len(view.y_lower):
-        raise ValueError(
-            f"BandView x and y_lower must have same length, got {len(view.x)} and {len(view.y_lower)}"
-        )
-    if len(view.x) != len(view.y_upper):
-        raise ValueError(
-            f"BandView x and y_upper must have same length, got {len(view.x)} and {len(view.y_upper)}"
-        )
-    if len(view.y_lower) != len(view.y_upper):
-        raise ValueError(
-            f"BandView y_lower and y_upper must have same length, got {len(view.y_lower)} and {len(view.y_upper)}"
-        )
+    _validate_matching_lengths(
+        view.x,
+        view.y_lower,
+        view.y_upper,
+        names=["x", "y_lower", "y_upper"],
+        view_type="BandView",
+    )
 
 
 def validate_scatter_view(view: ScatterView) -> None:
@@ -76,10 +113,9 @@ def validate_scatter_view(view: ScatterView) -> None:
     Raises:
         ValidationError: If x and y arrays have mismatched lengths.
     """
-    if len(view.x) != len(view.y):
-        raise ValueError(
-            f"ScatterView x and y must have same length, got {len(view.x)} and {len(view.y)}"
-        )
+    _validate_matching_lengths(
+        view.x, view.y, names=["x", "y"], view_type="ScatterView"
+    )
 
 
 def validate_bar_view(view: BarView) -> None:
@@ -89,18 +125,21 @@ def validate_bar_view(view: BarView) -> None:
         view: The BarView to validate.
 
     Raises:
-        ValueError: If x and height arrays have mismatched lengths.
+        ValidationError: If x and height arrays have mismatched lengths.
     """
-    if isinstance(view.x, np.ndarray):
-        if len(view.x) != len(view.height):
-            raise ValueError(
-                f"BarView x and height must have same length, got {len(view.x)} and {len(view.height)}"
-            )
-    elif isinstance(view.x, list):
-        if len(view.x) != len(view.height):
-            raise ValueError(
-                f"BarView x and height must have same length, got {len(view.x)} and {len(view.height)}"
-            )
+    x_length = len(view.x) if isinstance(view.x, (np.ndarray, list)) else 0
+    height_length = len(view.height)
+    
+    if x_length != height_length:
+        raise ValidationError(
+            f"BarView x and height must have same length, got {x_length} and {height_length}",
+            context={
+                "view_type": "BarView",
+                "x_length": x_length,
+                "height_length": height_length,
+                "x_type": type(view.x).__name__,
+            },
+        )
 
 
 def validate_waterfall_view(view: WaterfallView) -> None:
@@ -114,26 +153,20 @@ def validate_waterfall_view(view: WaterfallView) -> None:
     """
     categories = np.asarray(view.categories)
     values = np.asarray(view.values)
-    if len(categories) != len(values):
-        raise ValidationError(
-            f"WaterfallView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={
-                "view_type": "WaterfallView",
-                "categories_length": len(categories),
-                "values_length": len(values),
-            },
-        )
+    _validate_matching_lengths(
+        categories,
+        values,
+        names=["categories", "values"],
+        view_type="WaterfallView",
+    )
     if view.measures is not None:
         measures = np.asarray(view.measures)
-        if len(measures) != len(values):
-            raise ValidationError(
-                f"WaterfallView measures must have same length as values, got {len(measures)} and {len(values)}",
-                context={
-                    "view_type": "WaterfallView",
-                    "measures_length": len(measures),
-                    "values_length": len(values),
-                },
-            )
+        _validate_matching_lengths(
+            measures,
+            values,
+            names=["measures", "values"],
+            view_type="WaterfallView",
+        )
 
 
 def validate_dumbbell_view(view: DumbbellView) -> None:
@@ -148,17 +181,13 @@ def validate_dumbbell_view(view: DumbbellView) -> None:
     categories = np.asarray(view.categories)
     values1 = np.asarray(view.values1)
     values2 = np.asarray(view.values2)
-    if len(categories) != len(values1) or len(categories) != len(values2):
-        raise ValidationError(
-            f"DumbbellView categories, values1, and values2 must have same length, "
-            f"got {len(categories)}, {len(values1)}, {len(values2)}",
-            context={
-                "view_type": "DumbbellView",
-                "categories_length": len(categories),
-                "values1_length": len(values1),
-                "values2_length": len(values2),
-            },
-        )
+    _validate_matching_lengths(
+        categories,
+        values1,
+        values2,
+        names=["categories", "values1", "values2"],
+        view_type="DumbbellView",
+    )
 
 
 def validate_range_view(view: RangeView) -> None:
@@ -173,17 +202,13 @@ def validate_range_view(view: RangeView) -> None:
     categories = np.asarray(view.categories)
     values1 = np.asarray(view.values1)
     values2 = np.asarray(view.values2)
-    if len(categories) != len(values1) or len(categories) != len(values2):
-        raise ValidationError(
-            f"RangeView categories, values1, and values2 must have same length, "
-            f"got {len(categories)}, {len(values1)}, {len(values2)}",
-            context={
-                "view_type": "RangeView",
-                "categories_length": len(categories),
-                "values1_length": len(values1),
-                "values2_length": len(values2),
-            },
-        )
+    _validate_matching_lengths(
+        categories,
+        values1,
+        values2,
+        names=["categories", "values1", "values2"],
+        view_type="RangeView",
+    )
 
 
 def validate_lollipop_view(view: LollipopView) -> None:
@@ -197,15 +222,12 @@ def validate_lollipop_view(view: LollipopView) -> None:
     """
     categories = np.asarray(view.categories)
     values = np.asarray(view.values)
-    if len(categories) != len(values):
-        raise ValidationError(
-            f"LollipopView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={
-                "view_type": "LollipopView",
-                "categories_length": len(categories),
-                "values_length": len(values),
-            },
-        )
+    _validate_matching_lengths(
+        categories,
+        values,
+        names=["categories", "values"],
+        view_type="LollipopView",
+    )
 
 
 def validate_slope_view(view: SlopeView) -> None:
@@ -247,15 +269,12 @@ def validate_waffle_view(view: WaffleView) -> None:
     """
     categories = np.asarray(view.categories)
     values = np.asarray(view.values)
-    if len(categories) != len(values):
-        raise ValidationError(
-            f"WaffleView categories and values must have same length, got {len(categories)} and {len(values)}",
-            context={
-                "view_type": "WaffleView",
-                "categories_length": len(categories),
-                "values_length": len(values),
-            },
-        )
+    _validate_matching_lengths(
+        categories,
+        values,
+        names=["categories", "values"],
+        view_type="WaffleView",
+    )
     if np.any(values < 0):
         raise ValidationError(
             "WaffleView values must be non-negative",
@@ -314,29 +333,12 @@ def validate_violin_view(view: ViolinView) -> None:
         )
 
 
-def validate_all_views(
-    views: Sequence[
-        SeriesView
-        | BandView
-        | ScatterView
-        | HistogramView
-        | BarView
-        | HeatmapView
-        | WaterfallView
-        | WaffleView
-        | DumbbellView
-        | RangeView
-        | LollipopView
-        | SlopeView
-        | BoxView
-        | ViolinView
-        | MetricView
-    ],
-) -> None:
+def validate_all_views(views: Sequence[View]) -> None:
     """Validate a list of views.
 
     Args:
-        views: List of view objects to validate.
+        views: Sequence of view objects to validate. Accepts any sequence
+            containing one or more view types (SeriesView, BandView, etc.).
 
     Raises:
         ValidationError: If any view fails validation.
