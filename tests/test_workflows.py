@@ -1,14 +1,13 @@
 """Tests for Layer 4: workflows."""
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Use Agg backend for testing (non-interactive)
 import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pytest
 
 from plotsmith.workflows.workflows import (
     figure,
