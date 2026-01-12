@@ -1153,12 +1153,19 @@ class ScatterPlotTask:
         x_vals = self.data[self.x].values
         y_vals = self.data[self.y].values
 
-        # Handle color mapping - more Pythonic
-        c_vals = (
-            self.data[self.color].values
-            if (self.color and self.color in self.data.columns)
-            else None
-        )
+        # Handle color mapping - convert categorical strings to numeric
+        c_vals = None
+        if self.color and self.color in self.data.columns:
+            color_data = self.data[self.color].values
+            # If color column contains strings/categories, convert to numeric
+            if color_data.dtype == object or pd.api.types.is_categorical_dtype(
+                self.data[self.color]
+            ):
+                # Convert categories to numeric codes for matplotlib colormap
+                color_series = pd.Series(color_data)
+                c_vals = pd.Categorical(color_series).codes.astype(float)
+            else:
+                c_vals = color_data
 
         # Handle size mapping - more Pythonic
         s_vals = (

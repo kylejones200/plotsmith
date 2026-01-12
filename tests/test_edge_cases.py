@@ -10,6 +10,8 @@ import pandas as pd
 import pytest
 
 from plotsmith.exceptions import ValidationError
+
+from plotsmith.exceptions import ValidationError
 from plotsmith.workflows.workflows import (
     plot_bar,
     plot_box,
@@ -83,13 +85,13 @@ class TestInvalidInputs:
     def test_plot_scatter_missing_column(self):
         """Test that plot_scatter raises error for missing column."""
         df = pd.DataFrame({"x": [1, 2, 3]})
-        with pytest.raises((ValueError, KeyError)):
+        with pytest.raises(ValidationError):
             plot_scatter(df, x="x", y="missing_column")
 
     def test_plot_box_missing_column(self):
         """Test that plot_box raises error for missing column."""
         df = pd.DataFrame({"category": ["A", "B"]})
-        with pytest.raises((ValueError, KeyError)):
+        with pytest.raises(ValidationError):
             plot_box(df, x="category", y="missing_value")
 
     def test_plot_bar_mismatched_lengths(self):

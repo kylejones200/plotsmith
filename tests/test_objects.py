@@ -23,11 +23,11 @@ class TestSeriesView:
         validate_series_view(view)  # Should not raise
 
     def test_mismatched_lengths_raises_error(self):
-        """Test that mismatched x and y lengths raise ValueError."""
+        """Test that mismatched x and y lengths raise ValidationError."""
         x = np.array([1, 2, 3])
         y = np.array([10, 20])  # Different length
         view = SeriesView(x=x, y=y)
-        with pytest.raises(ValueError, match="must have same length"):
+        with pytest.raises(ValidationError, match="must have same length"):
             validate_series_view(view)
 
 
@@ -107,12 +107,12 @@ class TestValidateAllViews:
         validate_all_views(views)  # Should not raise
 
     def test_invalid_view_in_list_raises_error(self):
-        """Test that an invalid view in the list raises ValueError."""
+        """Test that an invalid view in the list raises ValidationError."""
         views = [
             SeriesView(x=np.array([1, 2, 3]), y=np.array([10, 20, 30])),
             SeriesView(x=np.array([1, 2, 3]), y=np.array([10, 20])),  # Invalid
         ]
-        with pytest.raises(ValueError):
+        with pytest.raises(ValidationError):
             validate_all_views(views)
 
     def test_unknown_view_type_raises_error(self):

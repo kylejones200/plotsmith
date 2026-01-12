@@ -7,7 +7,7 @@ class PlotSmithError(Exception):
     pass
 
 
-class ValidationError(PlotSmithError):
+class ValidationError(PlotSmithError, ValueError):
     """Raised when data validation fails.
 
     Attributes:
