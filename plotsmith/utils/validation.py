@@ -1,6 +1,7 @@
 """Validation utilities for PlotSmith."""
 
 from collections.abc import Sequence
+from typing import TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -8,8 +9,8 @@ import pandas as pd
 from plotsmith.exceptions import ValidationError
 
 # Type aliases for array-like data
-ArrayLike = np.ndarray | pd.Series | list[float] | Sequence[float]
-DataContainer = np.ndarray | pd.Series | pd.DataFrame | list | Sequence
+ArrayLike: TypeAlias = np.ndarray | pd.Series | list[float] | Sequence[float]
+DataContainer: TypeAlias = np.ndarray | pd.Series | pd.DataFrame | list | Sequence
 
 
 def validate_dataframe_columns(
@@ -109,16 +110,12 @@ def validate_not_empty(data: DataContainer, data_name: str = "data") -> None:
                 f"{data_name} is empty (array/list has no elements)",
                 context={"data_type": type(data).__name__, "length": len(data)},
             )
-    else:
-        try:
-            if len(data) == 0:
-                raise ValidationError(
-                    f"{data_name} is empty",
-                    context={"data_type": type(data).__name__, "length": len(data)},
-                )
-        except TypeError:
-            # Data doesn't support len(), assume it's valid
-            pass
+    elif isinstance(data, Sequence):
+        if len(data) == 0:
+            raise ValidationError(
+                f"{data_name} is empty",
+                context={"data_type": type(data).__name__, "length": len(data)},
+            )
 
 
 def validate_2d_array(

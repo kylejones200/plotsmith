@@ -1643,17 +1643,10 @@ def plot_forecast_comparison(
         minimal_axes(ax)
 
         # Draw bands first (so they're behind lines)
-        bands = [v for v in views if isinstance(v, BandView)]
-        series = [v for v in views if not isinstance(v, BandView)]
-
-        for view in bands:
+        for view in views:
             if isinstance(view, BandView):
                 draw_band(ax, view)
-
-        for view in series:
-            if isinstance(view, ScatterView):
-                draw_scatter(ax, view)
-            else:  # SeriesView
+            elif isinstance(view, SeriesView):
                 draw_series(ax, view)
 
         apply_axes_style(ax, spec)

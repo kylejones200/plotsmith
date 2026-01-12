@@ -1,6 +1,7 @@
 """Validators for checking shapes and alignment of view objects."""
 
 from collections.abc import Sequence
+from typing import TypeAlias
 
 import numpy as np
 
@@ -24,7 +25,7 @@ from plotsmith.objects.views import (
 )
 
 # Union type for all possible view types
-View = (
+View: TypeAlias = (
     SeriesView
     | BandView
     | ScatterView
@@ -39,7 +40,7 @@ View = (
     | SlopeView
     | BoxView
     | ViolinView
-    | MetricView,
+    | MetricView
 )
 
 
